@@ -1501,14 +1501,59 @@
         ]
       }
     },
+    "DEFINITIVES": {
+      "MISC": {
+        "a": "PREP",
+        "actualmente": "ADV",
+        "ahora": "ADV",
+        "anoche": "ADV",
+        "ante": "PREP",
+        "anteriormente": "ADV",
+        "antes": "ADV",
+        "antiguamente": "ADV",
+        "ayer": "ADV",
+        "aún": "ADV",
+        "bajo": "PREP",
+        "con": "PREP",
+        "constantemente": "ADV",
+        "contra": "PREP",
+        "cuando": "ADV",
+        "de": "PREP",
+        "desde": "PREP",
+        "después": "ADV",
+        "durante": "PREP",
+        "en": "PREP",
+        "enseguida": "ADV",
+        "entre": "PREP",
+        "hacia": "PREP",
+        "hasta": "PREP",
+        "hoy": "ADV",
+        "jamás": "ADV",
+        "luego": "ADV",
+        "mañana": "ADV",
+        "momentáneamente": "ADV",
+        "nunca": "ADV",
+        "para": "PREP",
+        "por": "PREP",
+        "pronto": "ADV",
+        "recién": "ADV",
+        "según": "PREP",
+        "siempre": "ADV",
+        "sin": "PREP",
+        "tarde": "ADV",
+        "ya": "ADV"
+      },
+      "GENDER": {
+        "mamá": "ella",
+        "papá": "él",
+        "abuelo": "él",
+        "abuela": "ella",
+        "pelota": "ella"
+      }
+    },
     "DEFAULTS": {
       "CON": "y",
       "GENDER": "él",
-      "MISC": {
-        "antes": "ADV",
-        "ayer": "ADV",
-        "después": "ADV"
-      },
       "PERSON": [
         "él",
         "ellos"
