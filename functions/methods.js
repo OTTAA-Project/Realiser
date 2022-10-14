@@ -32,7 +32,7 @@ async function prepareSentence(words, types, props, language){
     const pastersSn = await rt.ref(`${language}/PASTERS`).get()
     const pasters = pastersSn.val() || {};
 
-    [words, types] = await solveMISC(words, types, defaults)
+    [words, types] = await solveMISC(words, types, rt.ref(`${language}/DEFINITIVES/MISC`))
 
     const prepared = [];
     let i=0;
@@ -79,7 +79,7 @@ async function prepareSentence(words, types, props, language){
         i+=jMax;
     }
 
-    return await solveMOD(prepared, personsPlurals, personsGenders, advTimes, defaults);
+    return await solveMOD(prepared, personsPlurals, personsGenders, advTimes, definitives);
 }
 
 const { isDependant } = require('./dependencies.js')
