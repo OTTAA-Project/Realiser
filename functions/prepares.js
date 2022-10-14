@@ -38,12 +38,16 @@ async function solveMOD(tokens, personsPlurals, personsGenders, advTimes, defaul
     return tokens;
 }
 
-async function solveMISC(words, types, defaults){
-    const defaultsMISC = defaults['MISC'];
-    if(!defaultsMISC) return [words, types];
+async function solveMISC(words, types, definitivesRef){
+    var definitives;
+
     for (let i=0; i<types.length; i++){
         if (types[i] === 'MISC'){
-            types[i] = defaultsMISC[words[i]] || 'MISC';
+            if (!definitives){
+                const definitivesSn = await definitivesRef.get();
+                definitives = definitivesSn.val();
+            }
+            types[i] = definitives[words[i]] || 'MISC';
         }
     }
     return [words, types];
