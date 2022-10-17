@@ -30,7 +30,7 @@ async function handleVERB(obj, sentence, langRef, src, defaults, forces){
     obj.meta.PERSON = defaults.PERSON;
     
     const childrenSUBJ = obj.children.filter(c => c.type === 'SUBJ' || c.type === 'NOUN') //HERE: check if include NOUN here is ok
-    if (forces.PERSON){
+    if (forces.PERSON && childrenSUBJ.every(c => !sentence[c.position].words.includes(forces.PERSON))){
         obj.meta.PERSON = forces.PERSON;
     } else if (childrenSUBJ.length > 1) {
         const childrenSUBJpersons = childrenSUBJ.map(c => sentence[c.position].meta.PERSON)
