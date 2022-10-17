@@ -1,7 +1,7 @@
-async function handleType(obj, sentence, langRef, src, defaults){
+async function handleType(obj, sentence, langRef, src, defaults, forces){
     switch (obj.type){
         case 'VERB':
-            obj = await handleVERB(obj, sentence, langRef, src, defaults);
+            obj = await handleVERB(obj, sentence, langRef, src, defaults, forces);
             break;
         case 'NOUN':
             obj = await handleNOUN(obj, sentence, langRef, src, defaults);
@@ -18,7 +18,7 @@ async function handleType(obj, sentence, langRef, src, defaults){
     }
 }
 
-async function handleVERB(obj, sentence, langRef, src, defaults){
+async function handleVERB(obj, sentence, langRef, src, defaults, forces){
     //HERE: we are joining prepositions into the previous verb
     let prepIndex = obj.types.findIndex(t => t === 'PREP')
     while (prepIndex >= 0) {
@@ -30,17 +30,21 @@ async function handleVERB(obj, sentence, langRef, src, defaults){
     obj.meta.PERSON = defaults.PERSON;
     
     const childrenSUBJ = obj.children.filter(c => c.type === 'SUBJ' || c.type === 'NOUN') //HERE: check if include NOUN here is ok
-    if (childrenSUBJ.length > 1) {
+    if (forces.PERSON){
+        obj.meta.PERSON = forces.PERSON;
+    } else if (childrenSUBJ.length > 1) {
         const childrenSUBJpersons = childrenSUBJ.map(c => sentence[c.position].meta.PERSON)
         const personsPluralsSn = await langRef.child(`PERSONS/PLURALS`).get() //if there's more than one subj token, recall the personPlurals
         const personsPlurals = personsPluralsSn.val() || {};
-        const foundPerson = personsPlurals.find(person => ( childrenSUBJpersons.includes(person[0]) || childrenSUBJpersons.includes(person[1])));
+        const foundPerson = personsPlurals.find(person => childrenSUBJpersons.includes(person[0]) || childrenSUBJpersons.includes(person[1]));
         obj.meta.PERSON = foundPerson[1];
     } else if (childrenSUBJ.length === 1) obj.meta.PERSON = sentence[childrenSUBJ[0].position].meta.PERSON || obj.meta.PERSON;
     
     obj.meta.TIME = defaults.TIME;
     const childrenADV = obj.children.filter(c => c.type === 'ADV')
-    if (childrenADV.length > 1) {
+    if (forces.TIME){
+        obj.meta.TIME = forces.TIME;
+    } else if (childrenADV.length > 1) {
         const sortedChildrenADV = childrenADV.sort((a, b) => Math.abs(a.position - obj.position) - Math.abs(b.position - obj.position))
         for (childADV of sortedChildrenADV) {
             if (sentence[childADV.position].meta.TIME) {

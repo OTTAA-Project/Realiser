@@ -134,12 +134,12 @@ async function parseDependencies(wordList, headlessList, language){ //Algorithm 
 
 const { handleType } = require('./handlers.js')
 
-async function handleSentence(sentence, language, src = 'static'){
+async function handleSentence(sentence, language, forces, src = 'static'){
     const defaultsSn = await rt.ref(`${language}/DEFAULTS`).get()
     const defaults = defaultsSn.val() || {};
     const langRef = rt.ref(language)
 
-    for (obj of sentence) await handleType(obj, sentence, langRef, src, defaults);
+    for (obj of sentence) await handleType(obj, sentence, langRef, src, defaults, forces);
 
     return sentence;
 }

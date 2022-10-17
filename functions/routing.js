@@ -1,5 +1,5 @@
 const express = require('express');
-const { error } = require("firebase-functions/lib/logger");
+const { log, error } = require("firebase-functions/lib/logger");
 
 const { 
     addLexiconData, 
@@ -45,9 +45,10 @@ app.post('/', allowCors, (req, res) => {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
         return;
     }
+    const forces = {...req.query}
     prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
     .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
-    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en'))
+    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en', forces))
     .then(handled => res.status(200).json({sentence: handled}))
     .catch((err) => {
         error(`Error at parsing: ${err.message}`);
@@ -89,9 +90,11 @@ app.post('/realise', allowCors, (req, res) => {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
         return;
     }
+    log(body)
+    const forces = {...req.query}
     prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
     .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
-    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en'))
+    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en', forces))
     .then(handled => realiseSentence(handled, body.language || 'en'))
     .then(realised => res.status(200).json({sentence: realised}))
     .catch((err) => {
