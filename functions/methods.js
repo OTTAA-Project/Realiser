@@ -79,7 +79,7 @@ async function prepareSentence(words, types, props, language){
         i+=jMax;
     }
 
-    return await solveMOD(prepared, personsPlurals, personsGenders, advTimes, definitives);
+    return await solveMOD(prepared, personsPlurals, personsGenders, advTimes, defaults);
 }
 
 const { isDependant } = require('./dependencies.js')

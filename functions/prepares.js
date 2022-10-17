@@ -45,7 +45,7 @@ async function solveMISC(words, types, definitivesRef){
         if (types[i] === 'MISC'){
             if (!definitives){
                 const definitivesSn = await definitivesRef.get();
-                definitives = definitivesSn.val();
+                definitives = definitivesSn.val() || {};
             }
             types[i] = definitives[words[i]] || 'MISC';
         }
@@ -104,10 +104,8 @@ function prepareMetaSUBJ(obj, personsPlurals, personsGenders, defaults){
     if(genders.length > 0){
         const foundPerson = personsPlurals.find(person => ( obj.words.includes(person[0]) || obj.words.includes(person[1]))) || personsPlurals.at(-1);
         obj.meta.PERSON = genders.length > 1 ? foundPerson[1] : foundPerson[0];
-        if (!personsGenders.flat(1).includes(obj.meta.PERSON)){
-            const foundGender = personsGenders.find(gender => ( genders.includes(gender[0]) || genders.includes(gender[1])));
-            obj.meta.GENDER = genders.length > 1 ? foundGender[1] : foundGender[0]; 
-        }
+        const foundGender = personsGenders.find(gender => ( genders.includes(gender[0]) || genders.includes(gender[1])));
+        obj.meta.GENDER = genders.length > 1 ? foundGender[1] : foundGender[0]; 
     } else {
         obj.meta.PERSON = defaults.GENDER;
     }
