@@ -90,7 +90,6 @@ app.post('/realise', allowCors, (req, res) => {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
         return;
     }
-    log(body)
     const forces = {...req.query}
     prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
     .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
