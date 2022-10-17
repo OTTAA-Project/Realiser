@@ -89,6 +89,7 @@ function prepareMetaNOUN(obj, personsPlurals, personsGenders, defaults){
     }
 
     obj.type = 'SUBJ' //HERE: this might be temporary, for now it seems to be no difference between a SUBJ and a NOUN
+    obj.types = obj.types.map(t => t === 'NOUN' ? 'SUBJ' : t)
     
     return obj;
 }
