@@ -87,6 +87,8 @@ function prepareMetaNOUN(obj, personsPlurals, personsGenders, defaults){
     } else {
         obj.meta.PERSON = defaults.GENDER;
     }
+
+    obj.type = 'SUBJ' //HERE: this might be temporary, for now it seems to be no difference between a SUBJ and a NOUN
     
     return obj;
 }
