@@ -32,7 +32,7 @@ async function prepareSentence(words, types, props, language){
     const pastersSn = await rt.ref(`${language}/PASTERS`).get()
     const pasters = pastersSn.val() || {};
 
-    [words, types] = await solveMISC(words, types, rt.ref(`${language}/DEFINITIVES/MISC`))
+    [words, types] = await solveMISC(words.map(w => w.toLowerCase()), types.map(t => t.toUpperCase()), rt.ref(`${language}/DEFINITIVES/MISC`))
 
     const prepared = [];
     let i=0;
