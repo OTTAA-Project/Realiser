@@ -96,13 +96,28 @@ async function getVERBConjugations(infinitive, src, langRef, time, person){
 }
 
 async function getVERBInfinitive(word, langRef){
-    const fullInf = []
-    for(let w of word.split(' ')){
+    const fullInf = [];
+    const wordSplit = word.split(' ');
+    var i = 0;
+    while(i < wordSplit.length){
+        const w = wordSplit[i];
         const infinitiveSn = await langRef.child(`VERBS/INFINITIVES/${w}`).get();
-        if(infinitiveSn.exists()) fullInf.push(infinitiveSn.val())
-        else fullInf.push(w)
+        if(infinitiveSn.exists()) {
+            const [inf, unless] = infinitiveSn.val().split(':')
+            if(unless){
+                const unlessSplit = unless.split(' ')
+                if(unless === wordSplit.slice(i, i+unlessSplit.length).join(' ')){
+                    fullInf.push(unless);
+                    i+=unlessSplit.length;
+                    continue
+                }
+            }
+            fullInf.push(inf) //not necesssary to use "else" bc of "continue"
+        } else fullInf.push(w)
+        i++;
     }
     return fullInf.join(' ')
+    
 }
 
 async function handleNOUN(obj, sentence, langRef, src, defaults){
