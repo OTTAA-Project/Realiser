@@ -1,24 +1,26 @@
-async function handleType(obj, sentence, langRef, src, defaults, forces){
+const { dbGetter } = require("./getter.js");
+
+async function handleType(obj, sentence, langRef, src, forces){
     switch (obj.type){
         case 'VERB':
-            obj = await handleVERB(obj, sentence, langRef, src, defaults, forces);
+            obj = await handleVERB(obj, sentence, langRef, src, forces);
             break;
         case 'NOUN':
-            obj = await handleNOUN(obj, sentence, langRef, src, defaults);
+            obj = await handleNOUN(obj, sentence, langRef, src);
             break;
         case 'SUBJ':
-            obj = await handleSUBJ(obj, sentence, langRef, src, defaults);
+            obj = await handleSUBJ(obj, sentence, langRef, src);
             break;
         case 'ADJ':
-            obj = await handleADJ(obj, defaults);
+            obj = await handleADJ(obj, langRef);
             break;
         case 'ADV':
-            obj = await handleADV(obj, defaults);
+            obj = await handleADV(obj, langRef);
             break;
     }
 }
 
-async function handleVERB(obj, sentence, langRef, src, defaults, forces){
+async function handleVERB(obj, sentence, langRef, src, forces){
     //HERE: we are joining prepositions into the previous verb
     let prepIndex = obj.types.findIndex(t => t === 'PREP')
     while (prepIndex >= 0) {
@@ -27,6 +29,7 @@ async function handleVERB(obj, sentence, langRef, src, defaults, forces){
         prepIndex = obj.types.findIndex(t => t === 'PREP')
     }
     /////////////////////////////////////////////////////////
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     obj.meta.PERSON = defaults.PERSON;
     
     const childrenSUBJ = obj.children.filter(c => c.type === 'SUBJ' || c.type === 'NOUN') //HERE: check if include NOUN here is ok
@@ -34,8 +37,7 @@ async function handleVERB(obj, sentence, langRef, src, defaults, forces){
         obj.meta.PERSON = forces.PERSON;
     } else if (childrenSUBJ.length > 1) {
         const childrenSUBJpersons = childrenSUBJ.map(c => sentence[c.position].meta.PERSON)
-        const personsPluralsSn = await langRef.child(`PERSONS/PLURALS`).get() //if there's more than one subj token, recall the personPlurals
-        const personsPlurals = personsPluralsSn.val() || {};
+        const personsPlurals = await dbGetter.getPersistent(langRef, 'PERSONS/PLURALS', {})
         const foundPerson = personsPlurals.find(person => childrenSUBJpersons.includes(person[0]) || childrenSUBJpersons.includes(person[1]));
         obj.meta.PERSON = foundPerson[1];
     } else if (childrenSUBJ.length === 1) obj.meta.PERSON = sentence[childrenSUBJ[0].position].meta.PERSON || obj.meta.PERSON;
@@ -57,12 +59,12 @@ async function handleVERB(obj, sentence, langRef, src, defaults, forces){
     return await conjugateVERB(obj, langRef, src, defaults);
 }
 
-async function conjugateVERB(obj, langRef, src, defaults){ 
-
+async function conjugateVERB(obj, langRef, src){ 
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     const newWordsInf = obj.words.map(word => getVERBInfinitive(word, langRef));
     const newWordsSeq = newWordsInf.map(p => new Promise((resolve) => {
-        p.then(inf => langRef.child(`VERBS/SEQUENCES/${inf}`).get())
-        .then(seq => resolve(seq.exists() ? seq.val() : undefined))
+        p.then(inf => dbGetter.getOnce(langRef, `VERBS/SEQUENCES/${inf}`))
+        .then(seq => resolve(seq))
     }))
     const newWords = obj.words.map((w, i) => new Promise((resolve) => {
         Promise.all([newWordsInf[i], newWordsSeq[i-1]])
@@ -90,8 +92,7 @@ async function getVERBConjugations(infinitive, src, langRef, time, person){
     let conj;
     switch (src){
         case 'static':
-            const conjSn = await langRef.child(`VERBS/CONJUGATIONS/${infinitive}/${time + (person ? '/' + person : '')}`).get()
-            conj = conjSn.val();
+            conj = await dbGetter.getOnce(langRef, `VERBS/CONJUGATIONS/${infinitive}/${time + (person ? '/' + person : '')}`)
             break;
         case 'wordreference':
             break;
@@ -105,9 +106,9 @@ async function getVERBInfinitive(word, langRef){
     var i = 0;
     while(i < wordSplit.length){
         const w = wordSplit[i];
-        const infinitiveSn = await langRef.child(`VERBS/INFINITIVES/${w}`).get();
-        if(infinitiveSn.exists()) {
-            const [inf, unless] = infinitiveSn.val().split(':')
+        const infinitiveData = await dbGetter.getOnce(langRef, `VERBS/INFINITIVES/${w}`);
+        if(infinitiveData) {
+            const [inf, unless] = infinitiveData.split(':')
             if(unless){
                 const unlessSplit = unless.split(' ')
                 if(unless === wordSplit.slice(i, i+unlessSplit.length).join(' ')){
@@ -124,7 +125,8 @@ async function getVERBInfinitive(word, langRef){
     
 }
 
-async function handleNOUN(obj, sentence, langRef, src, defaults){
+async function handleNOUN(obj, sentence, langRef, src){
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     if (obj.composed) {
         if(obj.types.at(-2) === 'NOUN'){
             obj.words.splice(-1, 0, defaults.CON);
@@ -145,7 +147,8 @@ async function handleNOUN(obj, sentence, langRef, src, defaults){
     return obj;
 }
 
-async function handleSUBJ(obj, sentence, langRef, src, defaults){
+async function handleSUBJ(obj, sentence, langRef, src){
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     if (obj.composed) {
         if(obj.types.at(-2) === 'SUBJ'){
             obj.words.splice(-1, 0, defaults.CON);
@@ -166,7 +169,8 @@ async function handleSUBJ(obj, sentence, langRef, src, defaults){
     return obj;
 }
 
-async function handleADJ(obj, defaults){
+async function handleADJ(obj, langRef){
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     if (obj.composed && obj.types.at(-2) === 'ADJ') {
         obj.words.splice(-1, 0, defaults.CON); //HERE: generalize this for multiple languages
         obj.types.splice(-1, 0, "CON");
@@ -185,8 +189,7 @@ async function getADJConjugations(word, src, langRef, person){
     let conj;
     switch (src){
         case 'static':
-            const conjSn = await langRef.child(`ADJECTIVES/GENDERS/${word}/${person}`).get()
-            conj = conjSn.val();
+            conj = await dbGetter.getOnce(langRef, `ADJECTIVES/GENDERS/${word}/${person}`);
             break;
         case 'wordreference':
             break;
@@ -194,7 +197,8 @@ async function getADJConjugations(word, src, langRef, person){
     return conj || word;
 }
 
-async function handleADV(obj, defaults){
+async function handleADV(obj, langRef){
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     if (obj.composed && obj.types.at(-2) === 'ADV') {
         obj.words.splice(-1, 0, defaults.CON); //HERE: generalize this for multiple languages
         obj.types.splice(-1, 0, "CON");
