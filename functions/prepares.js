@@ -34,7 +34,7 @@ async function solveMOD(tokens, langRef){
                 }
                 j++;
             }
-            tokens[i] = prepareMeta(tokens[i], langRef)
+            tokens[i] = await prepareMeta(tokens[i], langRef)
         }
     }
     return tokens;
