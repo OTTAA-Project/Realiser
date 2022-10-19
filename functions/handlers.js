@@ -125,9 +125,14 @@ async function getVERBInfinitive(word, langRef){
 }
 
 async function handleNOUN(obj, sentence, langRef, src, defaults){
-    if (obj.composed && obj.types.at(-2) === 'NOUN') {
-        obj.words.splice(-1, 0, defaults.CON);
-        obj.types.splice(-1, 0, "CON");
+    if (obj.composed) {
+        if(obj.types.at(-2) === 'NOUN'){
+            obj.words.splice(-1, 0, defaults.CON);
+            obj.types.splice(-1, 0, "CON");
+        } else if (obj.types.at(-2) === 'ART' && obj.types.at(-3) === 'NOUN'){
+            obj.words.splice(-2, 0, defaults.CON);
+            obj.types.splice(-2, 0, "CON");
+        }
     }
     for (c of obj.children){
         switch (sentence[c.position].type){ 
@@ -141,9 +146,14 @@ async function handleNOUN(obj, sentence, langRef, src, defaults){
 }
 
 async function handleSUBJ(obj, sentence, langRef, src, defaults){
-    if (obj.composed && obj.types.at(-2) === 'SUBJ') {
-        obj.words.splice(-1, 0, defaults.CON);
-        obj.types.splice(-1, 0, "CON");
+    if (obj.composed) {
+        if(obj.types.at(-2) === 'SUBJ'){
+            obj.words.splice(-1, 0, defaults.CON);
+            obj.types.splice(-1, 0, "CON");
+        } else if (obj.types.at(-2) === 'ART' && obj.types.at(-3) === 'SUBJ'){
+            obj.words.splice(-2, 0, defaults.CON);
+            obj.types.splice(-2, 0, "CON");
+        }
     }
     for (c of obj.children){
         switch (sentence[c.position].type){ 
