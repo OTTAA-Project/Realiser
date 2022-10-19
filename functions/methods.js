@@ -25,7 +25,6 @@ async function prepareSentence(words, types, props, language){
     
     const langRef = rt.ref(language);
 
-    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
     const pasters = await dbGetter.getPersistent(langRef, 'PASTERS', {});
 
     [words, types] = await solveMISC(words.map(w => w.toLowerCase()), types.map(t => t.toUpperCase()), langRef)
