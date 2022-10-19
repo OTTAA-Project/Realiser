@@ -1,5 +1,6 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('./ottaaproject-flutter-firebase-adminsdk-z2x83-b744263584.json');
+const { dbGetter } = require('./getter.js')
 
 try{
     admin.app('realiser')
@@ -21,19 +22,11 @@ async function addLexiconData(path, data){
 const { solveMOD, solveMISC, prepareMeta } = require('./prepares.js')
 
 async function prepareSentence(words, types, props, language){
-    const personsPluralsSn = await rt.ref(`${language}/PERSONS/PLURALS`).get()
-    const personsPlurals = personsPluralsSn.val() || {};
-    const personsGendersSn = await rt.ref(`${language}/PERSONS/GENDERS`).get()
-    const personsGenders = personsGendersSn.val() || {};
-    const advTimesSn = await rt.ref(`${language}/ADVERBS/TIMES`).get()
-    const advTimes = advTimesSn.val() || {};
-    const articlesGendersSn = await rt.ref(`${language}/ARTICLES/GENDERS`).get()
-    const articlesGenders = articlesGendersSn.val() || {};
-    const defaultsSn = await rt.ref(`${language}/DEFAULTS`).get()
-    const defaults = defaultsSn.val() || {};
-    const pastersSn = await rt.ref(`${language}/PASTERS`).get()
-    const pasters = pastersSn.val() || {};
+    
     const langRef = rt.ref(language);
+
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
+    const pasters = await dbGetter.getPersistent(langRef, 'PASTERS', {});
 
     [words, types] = await solveMISC(words.map(w => w.toLowerCase()), types.map(t => t.toUpperCase()), langRef)
 
@@ -73,25 +66,22 @@ async function prepareSentence(words, types, props, language){
         const tToken = types.slice(i, i+jMax);
         const pToken = Object.fromEntries(Object.entries(props).filter(e => i <= e[0] && e[0] < i+jMax).map(e => [e[0]-i, e[1]]))
         prepared.push(prepareMeta(
-            {words: wToken, types: tToken, composed: j>1, type, children: [], meta: {}, props: pToken, position: prepared.length, headless: true}, 
-            personsPlurals, 
-            personsGenders, 
-            advTimes,
-            articlesGenders,
-            defaults,
+            {words: wToken, types: tToken, composed: j>1, type, children: [], meta: {}, props: pToken, position: prepared.length, headless: true},
             langRef
         ))
         i+=jMax;
     }
     
-    return await solveMOD(await Promise.all(prepared), personsPlurals, personsGenders, advTimes, defaults);
+    return await solveMOD(await Promise.all(prepared), langRef);
 }
 
 const { isDependant } = require('./dependencies.js')
 
-async function parseDependencies(wordList, headlessList, language){ //Algorithm LSU from "A Fundamental Algorithm for Dependency Parsing"
-    const isHeadOfSn = await rt.ref(`${language}/HEADS`).get()
-    const isHeadOf = isHeadOfSn.val(); //if heads gets too large this might be done for each wordtype relation and not bringing the whole isHeadOf obj
+async function parseDependencies(wordList, headlessList, language){
+    
+    const langRef = rt.ref(language)
+    const isHeadOf = await dbGetter.getPersistent(langRef, 'HEADS', {});
+
     for(let i=0; i<wordList.length; i++){
         //children
         const updateHeadlessList = []
@@ -127,12 +117,12 @@ async function parseDependencies(wordList, headlessList, language){ //Algorithm 
     return [wordList, headlessList];
 }
 
-const { handleType } = require('./handlers.js')
+const { handleType } = require('./handlers.js');
 
 async function handleSentence(sentence, language, forces, src = 'static'){
-    const defaultsSn = await rt.ref(`${language}/DEFAULTS`).get()
-    const defaults = defaultsSn.val() || {};
+    
     const langRef = rt.ref(language)
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
 
     for (obj of sentence) await handleType(obj, sentence, langRef, src, defaults, forces);
 
@@ -140,8 +130,9 @@ async function handleSentence(sentence, language, forces, src = 'static'){
 }
 
 async function realiseSentence(obj, language){
-    const defaultsSn = await rt.ref(`${language}/DEFAULTS`).get()
-    const defaults = defaultsSn.val() || {};
+    
+    const langRef = rt.ref(language)
+    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
 
     const finalProcessing = (w) => {
         let i = w.position +1;
