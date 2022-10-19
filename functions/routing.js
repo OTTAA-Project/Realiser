@@ -102,4 +102,8 @@ app.post('/realise', allowCors, (req, res) => {
     })
 })
 
+app.post('/replicate', allowCors, (req, res) => {
+    res.status(200).json(req.body)
+})
+
 module.exports = app;
