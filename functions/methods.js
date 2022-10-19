@@ -27,12 +27,15 @@ async function prepareSentence(words, types, props, language){
     const personsGenders = personsGendersSn.val() || {};
     const advTimesSn = await rt.ref(`${language}/ADVERBS/TIMES`).get()
     const advTimes = advTimesSn.val() || {};
+    const articlesGendersSn = await rt.ref(`${language}/ARTICLES/GENDERS`).get()
+    const articlesGenders = articlesGendersSn.val() || {};
     const defaultsSn = await rt.ref(`${language}/DEFAULTS`).get()
     const defaults = defaultsSn.val() || {};
     const pastersSn = await rt.ref(`${language}/PASTERS`).get()
     const pasters = pastersSn.val() || {};
+    const langRef = rt.ref(language);
 
-    [words, types] = await solveMISC(words.map(w => w.toLowerCase()), types.map(t => t.toUpperCase()), rt.ref(`${language}/DEFINITIVES/MISC`))
+    [words, types] = await solveMISC(words.map(w => w.toLowerCase()), types.map(t => t.toUpperCase()), langRef)
 
     const prepared = [];
     let i=0;
@@ -74,12 +77,14 @@ async function prepareSentence(words, types, props, language){
             personsPlurals, 
             personsGenders, 
             advTimes,
-            defaults
+            articlesGenders,
+            defaults,
+            langRef
         ))
         i+=jMax;
     }
-
-    return await solveMOD(prepared, personsPlurals, personsGenders, advTimes, defaults);
+    
+    return await solveMOD(await Promise.all(prepared), personsPlurals, personsGenders, advTimes, defaults);
 }
 
 const { isDependant } = require('./dependencies.js')
@@ -115,16 +120,6 @@ async function parseDependencies(wordList, headlessList, language){ //Algorithm 
                     break;
                 }
             }
-            /* HERE: THIS SHOULD NOT BE NECESSARY (and less efficient) IF USING THE headlessList
-            if(!passedRight){
-                if(isDependant(wordList[i], wordList[i+j], isHeadOf)) {
-                    wordList[i+j].children.push({position: i, type: wordList[i].type});
-                    wordList[i].headless = false;
-                    headless = false;
-                    break;
-                }
-            }
-            */
             j++;
         }
         if (headless) headlessList.push({position: i, type: wordList[i].type})
