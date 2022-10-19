@@ -79,20 +79,18 @@ const { isDependant } = require('./dependencies.js')
 
 async function parseDependencies(wordList, headlessList, language){
     
-    const langRef = rt.ref(language)
+    const langRef = rt.ref(language);
     const isHeadOf = await dbGetter.getPersistent(langRef, 'HEADS', {});
 
     for(let i=0; i<wordList.length; i++){
         //children
-        const updateHeadlessList = []
+        const updateHeadlessList = [];
         for(let j=0; j<headlessList.length; j++){
             if(isDependant(headlessList[j], wordList[i], isHeadOf)) {
-                const headlessNoMore = headlessList[j]
+                const headlessNoMore = headlessList[j];
                 wordList[headlessNoMore.position].headless = false;
-                wordList[i].children.push(headlessNoMore)
-            } else {
-                updateHeadlessList.push(headlessList[j])
-            }
+                wordList[i].children.push(headlessNoMore);
+            } else updateHeadlessList.push(headlessList[j]);
         }
         headlessList = updateHeadlessList;
         //head
@@ -112,7 +110,7 @@ async function parseDependencies(wordList, headlessList, language){
             }
             j++;
         }
-        if (headless) headlessList.push({position: i, type: wordList[i].type})
+        if (headless) headlessList.push({position: i, type: wordList[i].type});
     }
     return [wordList, headlessList];
 }
@@ -121,10 +119,9 @@ const { handleType } = require('./handlers.js');
 
 async function handleSentence(sentence, language, forces, src = 'static'){
     
-    const langRef = rt.ref(language)
-    const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
+    const langRef = rt.ref(language);
 
-    for (obj of sentence) await handleType(obj, sentence, langRef, src, defaults, forces);
+    for (obj of sentence) await handleType(obj, sentence, langRef, src, forces);
 
     return sentence;
 }
