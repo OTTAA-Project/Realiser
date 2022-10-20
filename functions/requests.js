@@ -13,7 +13,7 @@ function createRequestPromise(options, unsafe){
     if(unsafe) requester = http;
     else requester = https;
     return new Promise((resolve) => {
-        requester.request(options, 
+        const req = requester.request(options, 
             (response) => {
             var str = '';
             
@@ -26,7 +26,7 @@ function createRequestPromise(options, unsafe){
             response.on('end', function () {
                 resolve(str)
             });
-        }).end();
+        }).end(JSON.stringify(options.body), 'utf-8');
     })
 }
 
