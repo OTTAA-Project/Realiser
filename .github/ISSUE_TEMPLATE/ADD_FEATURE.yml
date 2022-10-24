@@ -1,0 +1,46 @@
+name: Add a Feature 
+description: I want to suggest a new feature for the project! 
+
+title: "[Feat]: "
+labels: ["add description"]
+assignees:
+  - hectoritr
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature, also reach out at our discord, we want to know you!
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What is this about?
+      description: Please use the As a/I want to/So that style to describe what you want. 
+      placeholder: Tell us more!
+      value: "As a ... I want to... So that..."
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Where do you want to see this implemented?
+      multiple: true
+      options: 
+        - Chrome (WebApp)
+        - Android
+        - iOS
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/OTTAA-Project/.github/blob/main/.github/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
