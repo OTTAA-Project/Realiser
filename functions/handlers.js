@@ -205,7 +205,6 @@ async function handleSUBJ(obj, sentence, langRef, src){
             const toPrependSplit = toPrepend.split(',')
             for(let t=toPrependSplit.length-1; t>=0; t--){
                 const tp = toPrependSplit[t];
-                console.log(tp)
                 switch(tp){
                     case 'ART':
                         const articlesGenders = await dbGetter.getPersistent(langRef, 'ARTICLES/GENDERS', {});

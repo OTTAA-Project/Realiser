@@ -65,8 +65,6 @@ async function splitART(obj, langRef){
                     }
                     newWords.push(w)
                     newTypes.push('ART')
-                    console.log(newWords)
-                    console.log(newTypes)
                 } else {
                     currentNewWord.push(w)
                 }
@@ -139,10 +137,11 @@ async function prepareMetaNOUN(obj, langRef){
     if(genders.length > 0){
         const personsGenders = await dbGetter.getPersistent(langRef, 'PERSONS/GENDERS', {});
         const personsPlurals = await dbGetter.getPersistent(langRef, 'PERSONS/PLURALS', {});
+        const hasPluralWord = personsPlurals.some(e => obj.words.includes(e[1])) || personsGenders.some(e => genders.includes(e[1]))
         const foundPerson = personsPlurals.find(person => ( obj.words.includes(person[0]) || obj.words.includes(person[1]))) || personsPlurals.at(-1);
-        obj.meta.PERSON = genders.length > 1 ? foundPerson[1] : foundPerson[0];
+        obj.meta.PERSON = genders.length > 1 || genders[0] === foundPerson[1] ? foundPerson[1] : foundPerson[0];
         const foundGender = personsGenders.find(gender => ( genders.includes(gender[0]) || genders.includes(gender[1])));
-        obj.meta.GENDER = genders.length > 1 ? foundGender[1] : foundGender[0]; 
+        obj.meta.GENDER = genders.length > 1 || genders[0] === foundGender[1] ? foundGender[1] : foundGender[0]; 
     } else {
         obj.meta.PERSON = defaults.GENDER;
     }
@@ -157,8 +156,8 @@ async function prepareMetaNOUN(obj, langRef){
 async function prepareMetaSUBJ(obj, langRef){
     
     const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {});
-    await splitDefinitives(obj, langRef)
-    const genders = []
+    await splitDefinitives(obj, langRef);
+    const genders = [];
     for(let i=0; i<obj.words.length; i++){
         if (obj.types[i] === 'SUBJ'){
             const personsGenders = await dbGetter.getPersistent(langRef, 'PERSONS/GENDERS', {});
@@ -170,10 +169,11 @@ async function prepareMetaSUBJ(obj, langRef){
     if(genders.length > 0){
         const personsGenders = await dbGetter.getPersistent(langRef, 'PERSONS/GENDERS', {});
         const personsPlurals = await dbGetter.getPersistent(langRef, 'PERSONS/PLURALS', {});
-        const foundPerson = personsPlurals.find(person => ( obj.words.includes(person[0]) || obj.words.includes(person[1]))) || personsPlurals.at(-1);
-        obj.meta.PERSON = genders.length > 1 ? foundPerson[1] : foundPerson[0];
+        const hasPluralWord = personsPlurals.some(e => obj.words.includes(e[1])) || personsGenders.some(e => genders.includes(e[1]))
         const foundGender = personsGenders.find(gender => ( genders.includes(gender[0]) || genders.includes(gender[1])));
-        obj.meta.GENDER = genders.length > 1 ? foundGender[1] : foundGender[0]; 
+        obj.meta.GENDER = genders.length > 1 || hasPluralWord ? foundGender[1] : foundGender[0];
+        const foundPerson = personsPlurals.find(person => ( obj.words.includes(person[0]) || obj.words.includes(person[1]))) || personsPlurals.at(-1);
+        obj.meta.PERSON = genders.length > 1 || hasPluralWord ?  foundPerson[1] : foundPerson[0];
     } else {
         obj.meta.PERSON = defaults.GENDER;
     }
