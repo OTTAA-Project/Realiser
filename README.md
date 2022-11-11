@@ -35,10 +35,13 @@ Therefore, to contribute with the development, it is required:
 - a Firebase account (Google Accounts can be used) and a Firebase Project created, follow [these](https://docs.kii.com/en/samples/push-notifications/push-notifications-android-fcm/create-project/) steps;
 
 Once your Firebase Project is created, generate a new Service Account and use the credentials on the provided JSON with the provided script.
-Most of the logic of the Realiser is based on a lexicon saved on an instance of the Firebase Realtime Database, for which we provide a simple example [here]()
+Most of the logic of the Realiser is based on a lexicon saved on an instance of the Firebase Realtime Database, for which we provide a simple example [here](). Build up on it as you wish, following [these rules]().
+
 You are free to choose upgrading your Firebase plan to Blaze to be able to [upload your own version](https://firebase.google.com/docs/functions/get-started) of the Realiser to the cloud using Firebase Cloud Functions, but you can also develop and test new functionalities on a local server, propose those changes on a *pull-request* and see them applied on our side once it is merged. Keep in mind, though, that a local server might take longer to access data from resources like Realtime Database and Firestore Database.
 
-After forking and cloning this repository, remember installing every necessary package, since the packages files are not commited or pushed because of their size. To do it, run `npm i` or `npm install` on the CLI after installing NPM. There is no need to specify which packages to install because they are already listed on the *package.json* file. Still, there is a package that needs manual installation because it is generally installed globally: *firebase-tools*. To be able to run the server you will need to install it and initialize it following [this tutorial](https://firebase.google.com/docs/functions/get-started), which also shows how to upload your first cloud function (remember you do not need to do this, you can develop and test the methods on a server deployed locally). 
+After forking and cloning this repository, remember installing every necessary package, since the packages files are not commited or pushed because of their size. To do it, run `npm i` or `npm install` on the CLI after installing NPM. There is no need to specify which packages to install because they are already listed on the *package.json* file. 
+
+Still, there is a package that needs manual installation because it is generally installed globally: *firebase-tools*. To be able to run the server you will need to install it and initialize it following [this tutorial](https://firebase.google.com/docs/functions/get-started), which also shows how to upload your first cloud function (remember you do not need to do this, you can develop and test the methods on a server deployed locally). 
 
 ## Resources
 
@@ -49,7 +52,7 @@ Some [Python](https://www.python.org/) scripts might be used at some point for l
 
 ### API reference
 
- * We are using [Swagger](https://swagger.io/) to create the [API reference]()(add link when completed). More specifically, we use the module *swagger-ui-express* and the structure is build on *functions/docs/swagger.config.json*.
+We use [Swagger](https://swagger.io/) to create the [API reference]()(add link when completed). More specifically, we use the module *swagger-ui-express* and the structure is build on *functions/docs/swagger.config.json*.
 
 ## Contributing
 
