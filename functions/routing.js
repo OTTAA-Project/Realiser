@@ -30,15 +30,6 @@ app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req, res) => res.send('Welcome to the coolest Realiser!'))
 
-app.post('/lexicon', allowCors, (req, res) => {
-    if (!req.body.path || !req.body.data) res.status(400).json({err: 'Properties path and data required in the POST body to achieve adding data to lexicon'})
-    else {
-        addLexiconData(req.body.path, req.body.data)
-        .then(result => res.status(201).json({success: result}))
-        .catch(err => res.status(err.cause||500).json({err: err.message}))
-    }
-})
-
 app.post('/', allowCors, (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
