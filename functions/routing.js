@@ -1,8 +1,9 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDoc = require('./docs/swagger.config.json')
 const { log, error } = require("firebase-functions/lib/logger");
 
 const { 
-    addLexiconData, 
     prepareSentence, 
     parseDependencies, 
     handleSentence, 
@@ -27,25 +28,19 @@ const app = express()
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(express.static(__dirname)); //swagger customCssUrl requires defining an static path on functions (root)
+app.use(
+    '/docs',
+    allowCors,
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDoc, {
+        customCssUrl: '/assets/swagger.css',
+        customSiteTitle: 'OTTAA Realiser Docs',
+        customfavIcon: '/assets/logo.ico'
+    })
+)
 
 app.get('/', (req, res) => res.send('Welcome to the coolest Realiser!'))
-
-app.post('/', allowCors, (req, res) => {
-    const body = req.body;
-    if (!body.words || !body.types) {
-        res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
-        return;
-    }
-    const forces = {...req.query}
-    prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
-    .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
-    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en', forces))
-    .then(handled => res.status(200).json({sentence: handled}))
-    .catch((err) => {
-        error(`Error at parsing: ${err.message}`);
-        res.status(err.cause||500).json({error: err.message});
-    })
-})
 
 app.post('/prepare', allowCors, (req, res) => {
     const body = req.body;
@@ -63,12 +58,31 @@ app.post('/prepare', allowCors, (req, res) => {
 
 app.post('/parse', allowCors, (req, res) => {
     const body = req.body;
-    if (!body.sentence) {
-        res.status(400).send({err: 'Wrong request body, missing property sentence'})
+    if (!body.words || !body.types) {
+        res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
         return;
     }
-    parseDependencies(body.sentence, [])
-    .then((parsed, headless) => res.status(200).json({parsed, headless}))
+    const forces = {...req.query}
+    prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
+    .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
+    .then((sentence, headless) => res.status(200).json({sentence, headless}))
+    .catch((err) => {
+        error(`Error at parsing: ${err.message}`);
+        res.status(err.cause||500).json({error: err.message});
+    })
+})
+
+app.post('/dependate', allowCors, (req, res) => {
+    const body = req.body;
+    if (!body.words || !body.types) {
+        res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
+        return;
+    }
+    const forces = {...req.query}
+    prepareSentence(body.words, body.types, body.props || {}, body.language || 'en')
+    .then(prepared => parseDependencies(prepared, [], body.language || 'en'))
+    .then(([parsed, headless]) => handleSentence(parsed, body.language || 'en', forces))
+    .then(handled => res.status(200).json({sentence: handled}))
     .catch((err) => {
         error(`Error at parsing: ${err.message}`);
         res.status(err.cause||500).json({error: err.message});

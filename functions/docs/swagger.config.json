@@ -1,0 +1,440 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "realiser",
+    "version": "1.0.0",
+    "description": ""
+  },
+  "servers": [
+    {
+      "url": "https://us-central1-ottaaproject-flutter.cloudfunctions.net/realiser",
+      "description": "deploy"
+    }
+  ],
+  "paths": {
+    "/prepare": {
+      "post": {
+        "description": "Post the sentence object and get an array of the structure before it is realised.",
+        "parameters": [
+          {
+            "name": "words",
+            "in": "body",
+            "required": true,
+            "description": "array of words of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/wordArray"
+            }
+          },
+          {
+            "name": "types",
+            "in": "body",
+            "required": true,
+            "description": "array of wordtypes of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/typeArray"
+            }
+          },
+          {
+            "name": "language",
+            "in": "body",
+            "required": false,
+            "description": "language to use on the realisation, defaults to *en* (english)",
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          },
+          {
+            "name": "props",
+            "in": "body",
+            "required": false,
+            "description": "object containing extra properties of the sentence to realise, wheere main keys are the position of the word/wordtype to assign a property to",
+            "schema": {
+              "$ref": "#/components/schemas/propsObj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array with sentence elements prepared for parsing and depending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/preparedSentence"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid or missing keys, like words or types"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/parse": {
+      "post": {
+        "description": "Post the sentence object and get an array of the structure with words parsed into tokens based on the lexicon rules.",
+        "parameters": [
+          {
+            "name": "words",
+            "in": "body",
+            "required": true,
+            "description": "array of words of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/wordArray"
+            }
+          },
+          {
+            "name": "types",
+            "in": "body",
+            "required": true,
+            "description": "array of wordtypes of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/typeArray"
+            }
+          },
+          {
+            "name": "language",
+            "in": "body",
+            "required": false,
+            "description": "language to use on the realisation, defaults to *en* (english)",
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          },
+          {
+            "name": "props",
+            "in": "body",
+            "required": false,
+            "description": "object containing extra properties of the sentence to realise, wheere main keys are the position of the word/wordtype to assign a property to",
+            "schema": {
+              "$ref": "#/components/schemas/propsObj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array with sentence elements prepared and parsed for depending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/parsedSentence"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid or missing keys, like words or types"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/dependate": {
+      "post": {
+        "description": "Post the sentence object and get an array of the structure with dependencies traced and most processing of words already applied.",
+        "parameters": [
+          {
+            "name": "words",
+            "in": "body",
+            "required": true,
+            "description": "array of words of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/wordArray"
+            }
+          },
+          {
+            "name": "types",
+            "in": "body",
+            "required": true,
+            "description": "array of wordtypes of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/typeArray"
+            }
+          },
+          {
+            "name": "language",
+            "in": "body",
+            "required": false,
+            "description": "language to use on the realisation, defaults to *en* (english)",
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          },
+          {
+            "name": "props",
+            "in": "body",
+            "required": false,
+            "description": "object containing extra properties of the sentence to realise, wheere main keys are the position of the word/wordtype to assign a property to",
+            "schema": {
+              "$ref": "#/components/schemas/propsObj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array with sentence elements with dependant analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/realisedSentence"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid or missing keys, like words or types"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
+    "/realise": {
+      "post": {
+        "description": "Post the sentence object and get a string of the sentence finally realised.",
+        "parameters": [
+          {
+            "name": "words",
+            "in": "body",
+            "required": true,
+            "description": "array of words of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/wordArray"
+            }
+          },
+          {
+            "name": "types",
+            "in": "body",
+            "required": true,
+            "description": "array of wordtypes of the sentence to realise",
+            "schema": {
+              "$ref": "#/components/schemas/typeArray"
+            }
+          },
+          {
+            "name": "language",
+            "in": "body",
+            "required": false,
+            "description": "language to use on the realisation, defaults to *en* (english)",
+            "schema": {
+              "type": "string",
+              "example": "en"
+            }
+          },
+          {
+            "name": "props",
+            "in": "body",
+            "required": false,
+            "description": "object containing extra properties of the sentence to realise, wheere main keys are the position of the word/wordtype to assign a property to",
+            "schema": {
+              "$ref": "#/components/schemas/propsObj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "realised sentence",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sentence": {
+                      "type": "string",
+                      "example": "i am walking home"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "invalid or missing keys, like words or types"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "propsObj": {
+        "type": "object",
+        "properties": {
+          "$index": {
+            "type": "object",
+            "properties": {
+              "gender": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "example": {
+          "0": {
+            "gender": "he"
+          }
+        }
+      },
+      "wordArray": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": ["i", "be", "walk", "home"]
+      },
+      "typeArray": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "example": ["SUBJ", "VERB", "VERB", "NOUN"]
+      },
+      "sentenceElement": {
+        "type": "object",
+        "properties": {
+          "words": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["am", "walking"]
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["VERB", "VERB"]
+          },
+          "composed": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string",
+            "example": "VERB"
+          },
+          "children": {
+            "$ref": "#/components/schemas/sentenceChildren"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/sentenceMeta"
+          },
+          "props": {
+            "$ref": "#/components/schemas/propsObj"
+          },
+          "position": {
+            "type": "number",
+            "example": 1
+          },
+          "genders": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["he"]
+          },
+          "headless": {
+            "type": "boolean",
+            "example": false
+          },
+          "infs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["be", "walk"]
+          }
+        }
+      },
+      "sentenceChildren": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "number",
+              "example": 0
+            },
+            "type": {
+              "type": "string",
+              "example": "SUBJ"
+            }
+          }
+        }
+      },
+      "sentenceMeta": {
+        "type": "object",
+        "properties": {
+          "PERSON": {
+            "type": "string",
+            "example": "i"
+          },
+          "GENDER": {
+            "type": "string",
+            "example": "he"
+          },
+          "TIME": {
+            "type": "string",
+            "example": "present"
+          }
+        }
+      },
+      "preparedSentence": {
+        "type": "object",
+        "properties": {
+          "parsed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/sentenceElement"
+            }
+          }
+        },
+        "description": "Keep in mind that althought the *sentence* elements are generalized for most returned objects, data can differ between one request and the other depending on requested data. (i.e. /prepare will return elements with *children* but with just an empty array since children are obtained in /dependate)"
+      },
+      "parsedSentence": {
+        "type": "object",
+        "properties": {
+          "sentence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/sentenceElement"
+            }
+          }
+        },
+        "description": "Keep in mind that althought the *sentence* elements are generalized for most returned objects, data can differ between one request and the other depending on requested data. (i.e. /prepare will return elements with *children* but with just an empty array since children are obtained in /dependate)"
+      },
+      "dependedSentence": {
+        "type": "object",
+        "properties": {
+          "sentence": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/sentenceElement"
+            }
+          }
+        },
+        "description": "Keep in mind that althought the *sentence* elements are generalized for most returned objects, data can differ between one request and the other depending on requested data. (i.e. /prepare will return elements with *children* but with just an empty array since children are obtained in /dependate)"
+      },
+      "realisedSentence": {
+        "type": "object",
+        "properties": {
+          "sentence": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
