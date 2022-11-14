@@ -8,7 +8,7 @@ OTTAA Project's Realiser carries out this process over the cloud providing an AP
 ## How does it work?
 
 The Realiser server recieves different types of API requests and responds with the results of the realisation process at different stages or carried out under different parameters.
-For a detailed explanation on the endpoints of the service and their corresponding request types, see the [API Reference]()
+For a detailed explanation on the endpoints of the service and their corresponding request types, see the [API Reference](https://us-central1-ottaaproject-flutter.cloudfunctions.net/realiser/docs)
 
 ## Getting started: 
 
@@ -52,7 +52,7 @@ Some [Python](https://www.python.org/) scripts might be used at some point for l
 
 ### API reference
 
-We use [Swagger](https://swagger.io/) to create the [API reference]()(add link when completed). More specifically, we use the module *swagger-ui-express* and the structure is build on *functions/docs/swagger.config.json*.
+We use [Swagger](https://swagger.io/) to create the [API reference](https://us-central1-ottaaproject-flutter.cloudfunctions.net/realiser/docs). More specifically, we use the module *swagger-ui-express* and the structure is build on *functions/docs/swagger.config.json*.
 
 ## Contributing
 
