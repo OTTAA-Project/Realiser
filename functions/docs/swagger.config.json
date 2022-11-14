@@ -41,7 +41,8 @@
             "description": "language to use on the realisation, defaults to *en* (english)",
             "schema": {
               "type": "string",
-              "example": "en"
+              "example": "en",
+              "default": "en"
             }
           },
           {
@@ -103,7 +104,8 @@
             "description": "language to use on the realisation, defaults to *en* (english)",
             "schema": {
               "type": "string",
-              "example": "en"
+              "example": "en",
+              "default": "en"
             }
           },
           {
@@ -165,7 +167,8 @@
             "description": "language to use on the realisation, defaults to *en* (english)",
             "schema": {
               "type": "string",
-              "example": "en"
+              "example": "en",
+              "default": "en"
             }
           },
           {
@@ -176,6 +179,24 @@
             "schema": {
               "$ref": "#/components/schemas/propsObj"
             }
+          },
+          {
+            "name": "PERSON",
+            "in": "query",
+            "required": false,
+            "description": "forces the *PERSON* used for verb conjugation and adjective personification to an specific one, following the options on the **lexicon**"
+          },
+          {
+            "name": "TIME",
+            "in": "query",
+            "required": false,
+            "description": "forces the *TIME* used for verb conjugation to an specific one, following the options on the **lexicon**"
+          },
+          {
+            "name": "GENDER",
+            "in": "query",
+            "required": false,
+            "description": "forces the *GENDER* used for adjective personification to an specific one, following the options on the **lexicon**"
           }
         ],
         "responses": {
@@ -227,7 +248,8 @@
             "description": "language to use on the realisation, defaults to *en* (english)",
             "schema": {
               "type": "string",
-              "example": "en"
+              "example": "en",
+              "default": "en"
             }
           },
           {
@@ -238,6 +260,24 @@
             "schema": {
               "$ref": "#/components/schemas/propsObj"
             }
+          },
+          {
+            "name": "PERSON",
+            "in": "query",
+            "required": false,
+            "description": "forces the *PERSON* used for verb conjugation and adjective personification to an specific one, following the options on the **lexicon**"
+          },
+          {
+            "name": "TIME",
+            "in": "query",
+            "required": false,
+            "description": "forces the *TIME* used for verb conjugation to an specific one, following the options on the **lexicon**"
+          },
+          {
+            "name": "GENDER",
+            "in": "query",
+            "required": false,
+            "description": "forces the *GENDER* used for adjective personification to an specific one, following the options on the **lexicon**"
           }
         ],
         "responses": {
@@ -264,6 +304,22 @@
             "description": "internal server error"
           }
         }
+      }
+    },
+    "/replicate": {
+      "post": {
+        "description": "Replicate the request body for testing",
+        "parameters": [
+          {
+            "name": "any",
+            "in": "body",
+            "description": "this endpoint will replicate whichever body sent on the request",
+            "schema": {
+              "type": "object",
+              "example": {}
+            }
+          }
+        ]
       }
     }
   },
