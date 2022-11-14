@@ -36,7 +36,10 @@ app.use(
     swaggerUi.setup(swaggerDoc, {
         customCssUrl: '/assets/swagger.css',
         customSiteTitle: 'OTTAA Realiser Docs',
-        customfavIcon: '/assets/logo.ico'
+        customfavIcon: '/assets/logo.ico',
+        swaggerOptions: {
+            supportedSubmitMethods: [] //to disable the "Try it out" button
+        }
     })
 )
 
