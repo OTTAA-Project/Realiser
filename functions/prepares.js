@@ -139,9 +139,9 @@ async function prepareMetaNOUN(obj, langRef){
         const personsPlurals = await dbGetter.getPersistent(langRef, 'PERSONS/PLURALS', {});
         const hasPluralWord = personsPlurals.some(e => obj.words.includes(e[1])) || personsGenders.some(e => genders.includes(e[1]))
         const foundPerson = personsPlurals.find(person => ( obj.words.includes(person[0]) || obj.words.includes(person[1]))) || personsPlurals.at(-1);
-        obj.meta.PERSON = genders.length > 1 || genders[0] === foundPerson[1] ? foundPerson[1] : foundPerson[0];
+        obj.meta.PERSON = genders.length > 1 || hasPluralWord ? foundPerson[1] : foundPerson[0];
         const foundGender = personsGenders.find(gender => ( genders.includes(gender[0]) || genders.includes(gender[1])));
-        obj.meta.GENDER = genders.length > 1 || genders[0] === foundGender[1] ? foundGender[1] : foundGender[0]; 
+        obj.meta.GENDER = genders.length > 1 || hasPluralWord ? foundGender[1] : foundGender[0]; 
     } else {
         obj.meta.PERSON = defaults.GENDER;
     }
