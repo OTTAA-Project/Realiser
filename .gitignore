@@ -1,3 +1,6 @@
+# Tests
+**/functions/tests/results/*
+
 # NPM
 **/package-lock.json
 
