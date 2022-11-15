@@ -6,7 +6,8 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "logs": "firebase functions:log",
+    "test": "mocha tests/prepares.test.js"
   },
   "engines": {
     "node": "16"
@@ -19,7 +20,9 @@
     "swagger-ui-express": "^4.6.0"
   },
   "devDependencies": {
-    "firebase-functions-test": "^0.2.0"
+    "chai": "^4.3.7",
+    "firebase-functions-test": "^0.2.0",
+    "mocha": "^10.1.0"
   },
   "private": true
 }

@@ -1,17 +1,6 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('./ottaaproject-flutter-firebase-adminsdk-z2x83-b744263584.json');
-const { dbGetter } = require('./getter.js')
+const { dbGetter, getDbRef } = require('./getter.js')
 
-try{
-    admin.app('realiser')
-} catch (e){
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://ottaaproject-realiser-lexicons.firebaseio.com/",
-    }, 'realiser');
-}
-
-const rt = admin.app('realiser').database()
+const rt = getDbRef().database()
 
 async function addLexiconData(path, data){
     const newDataRef = rt.ref(path)
