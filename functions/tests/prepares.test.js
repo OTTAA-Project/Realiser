@@ -58,7 +58,7 @@ describe('Testing prepare NOUN methods', () => {
     })
 })
 
-describe('Testing prepare SUBJ methods', async () => {
+describe('Testing prepare SUBJ methods', () => {
     before(() => {
         const { getDbRef } = require('../getter.js')
         this.langRef = getDbRef().database().ref('es')
