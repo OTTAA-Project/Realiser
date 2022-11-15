@@ -1,3 +1,4 @@
 node_modules/
+tests/results/*
 package-lock.json
 ottaaproject-flutter-firebase-adminsdk-z2x83-b744263584.json

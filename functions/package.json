@@ -10,7 +10,8 @@
     "test": "npm run test-methods && npm run test-prepares && npm run test-dependencies",
     "test-methods": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js",
     "test-prepares": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/prepares tests/prepares.test.js",
-    "test-dependencies": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/dependencies tests/dependencies.test.js"
+    "test-dependencies": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/dependencies tests/dependencies.test.js",
+    "test-handlers": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/handlers tests/handlers.test.js"
   },
   "engines": {
     "node": "16"
