@@ -9,7 +9,7 @@ async function solveMOD(tokens, langRef){
                 const passedRight = i+j >= tokens.length;
                 if(passedLeft && passedRight) break;
                 if(!passedLeft){
-                    if(tokens[i-j].type == 'NOUN' || tokens[i-j].type == 'SUBJ') {
+                    if(tokens[i-j].type == 'NOUN' || tokens[i-j].type == 'SUBJ' ||  tokens[i-j].type == 'OBJ') {
                         tokens[i].type = 'ADJ';
                         tokens[i].types = tokens[i].types.map(t => t === 'MOD' ? 'ADJ' : t)
                         break;
@@ -21,7 +21,7 @@ async function solveMOD(tokens, langRef){
                     }
                 }
                 if(!passedRight){
-                    if(tokens[i+j].type == 'NOUN' || tokens[i+j].type == 'SUBJ') {
+                    if(tokens[i+j].type == 'NOUN' || tokens[i+j].type == 'SUBJ' ||  tokens[i+j].type == 'OBJ') {
                         tokens[i].type = 'ADJ';
                         tokens[i].types = tokens[i].types.map(t => t === 'MOD' ? 'ADJ' : t)
                         break;
