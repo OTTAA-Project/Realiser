@@ -1,3 +1,17 @@
+const admin = require('firebase-admin');
+const serviceAccount = require('./ottaaproject-flutter-firebase-adminsdk-z2x83-b744263584.json');
+
+function getDbRef () {
+    try{
+        return admin.app('realiser')
+    } catch (e){
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://ottaaproject-realiser-lexicons.firebaseio.com/",
+        }, 'realiser');
+        return admin.app('realiser')
+    }
+}
 
 class dbGetter{
     static alreadyData = {};
@@ -20,4 +34,4 @@ class dbGetter{
     }
 }
 
-module.exports = { dbGetter }
+module.exports = { dbGetter, getDbRef }
