@@ -43,6 +43,11 @@ After forking and cloning this repository, remember installing every necessary p
 
 Still, there is a package that needs manual installation because it is generally installed globally: *firebase-tools*. To be able to run the server you will need to install it and initialize it following [this tutorial](https://firebase.google.com/docs/functions/get-started), which also shows how to upload your first cloud function (remember you do not need to do this, you can develop and test the methods on a server deployed locally). 
 
+### Testng
+
+Testing is done using [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/).
+To evaluate the testing process, run `npm test` on the functions folder. The results will be printed on console and outputted to a graphical report on *functions/tests/results/* powered by [mochawesome](https://github.com/adamgruber/mochawesome).
+
 ## Resources
 
 ### Libraries & tools
