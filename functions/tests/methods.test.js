@@ -1,6 +1,6 @@
 const expect = require('chai').expect
 
-describe('Testing Prepare Sentence', async () => {
+describe('Testing Prepare Sentence', () => {
     before(() => {
         this.prepareSentence = require('../methods.js').prepareSentence;
         

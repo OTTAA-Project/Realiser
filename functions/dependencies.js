@@ -4,7 +4,7 @@ function isDependant(nodeChild, nodeParent, isHeadOf) {
                 const [amt, dir] = isHeadOf[nodeParent.type][nodeChild.type].split(':');
                 switch(amt){
                     case 'SING':
-                        return nodeParent.children.map(e => e.type).includes(nodeChild.type)
+                        return !nodeParent.children.map(e => e.type).includes(nodeChild.type)
                     case 'MULT':
                         switch(dir){
                             case 'LEFT':
