@@ -1,6 +1,6 @@
-const { dbGetter, getDbRef } = require('./getter.js')
+const { dbGetter, getApp } = require('./getter.js')
 
-const rt = getDbRef().database()
+const rt = getApp().database()
 
 async function addLexiconData(path, data){
     const newDataRef = rt.ref(path)

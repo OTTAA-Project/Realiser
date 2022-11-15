@@ -40,6 +40,8 @@ async function handleType(obj, sentence, langRef, src, forces){
             obj = await handleADV(obj, langRef);
             break;
     }
+
+    return obj
 }
 
 async function handleVERB(obj, sentence, langRef, src, forces){
@@ -52,7 +54,6 @@ async function handleVERB(obj, sentence, langRef, src, forces){
     }
     /////////////////////////////////////////////////////////
     const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
-    obj.meta.PERSON = defaults.PERSON;
     
     const childrenSUBJ = obj.children.filter(c => c.type === 'SUBJ' || c.type === 'NOUN') //HERE: check if include NOUN here is ok
     if (forces.PERSON && childrenSUBJ.every(c => !sentence[c.position].words.includes(forces.PERSON))){
@@ -62,13 +63,13 @@ async function handleVERB(obj, sentence, langRef, src, forces){
         const personsPlurals = await dbGetter.getPersistent(langRef, 'PERSONS/PLURALS', {})
         const foundPerson = personsPlurals.find(person => childrenSUBJpersons.includes(person[0]) || childrenSUBJpersons.includes(person[1]));
         obj.meta.PERSON = foundPerson[1];
-    } else if (childrenSUBJ.length === 1) obj.meta.PERSON = sentence[childrenSUBJ[0].position].meta.PERSON || obj.meta.PERSON;
+    } else if (childrenSUBJ.length === 1) obj.meta.PERSON = sentence[childrenSUBJ[0].position].meta.PERSON || defaults.PERSON[0];
+    else obj.meta.PERSON = defaults.PERSON[0];
     
-    obj.meta.TIME = defaults.TIME;
     const childrenADV = obj.children.filter(c => c.type === 'ADV')
     if (forces.TIME){
         obj.meta.TIME = forces.TIME;
-    } else if (childrenADV.length > 1) {
+    } else if (childrenADV.length > 1) { //HERE: maybe sorting here is worthless since we do a for loop later, maybe it's better to just do the loop and overwrite if position is higher
         const sortedChildrenADV = childrenADV.sort((a, b) => Math.abs(a.position - obj.position) - Math.abs(b.position - obj.position))
         for (childADV of sortedChildrenADV) {
             if (sentence[childADV.position].meta.TIME) {
@@ -76,7 +77,8 @@ async function handleVERB(obj, sentence, langRef, src, forces){
                 break;
             }
         }
-    } else if (childrenADV.length === 1) obj.meta.TIME = sentence[childrenADV[0].position].meta.TIME || obj.meta.TIME;
+    } else if (childrenADV.length === 1) obj.meta.TIME = sentence[childrenADV[0].position].meta.TIME || defaults.TIME;
+    else obj.meta.TIME = defaults.TIME;
     
     return await conjugateVERB(obj, langRef, src, defaults);
 }

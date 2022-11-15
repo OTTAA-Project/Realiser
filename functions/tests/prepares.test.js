@@ -2,8 +2,8 @@ const expect = require('chai').expect
 
 describe('Testing prepare NOUN methods', () => {
     before(() => {
-        const { getDbRef } = require('../getter.js')
-        this.langRef = getDbRef().database().ref('es')
+        const { getApp } = require('../getter.js')
+        this.langRef = getApp().database().ref('es')
         this.prepareMeta = require('../prepares.js').prepareMeta;
     })
 
