@@ -291,6 +291,24 @@ describe('Test Dependencies', () => {
 ///////   HANDLERS   ///////
 ////////////////////////////
 
+const prevs = { //prevs for handleSUBJ and handleNOUN
+    ART: {
+        DEFAULT: 'a'
+    },
+    NOUN: {
+        DEFAULT: 'ART',
+        EXCEPTION: {
+            casa: 'en'
+        }
+    },
+    SUBJ: {
+        DEFAULT: 'a,ART',
+        EXCEPTION: {
+            mamá: 'mi'
+        }
+    }
+}
+
 describe('Test VERB handlers', () => {
     before(() => {
         const { getApp } = require('../getter.js')
@@ -420,7 +438,203 @@ describe('Test VERB handlers', () => {
 })
 
 describe('Test SUBJ handlers', () => {
+    before(() => {
+        this.testObj = [
+            {
+                words: ['mamá'],
+                types: ['SUBJ'],
+                composed: false,
+                type: 'SUBJ',
+                children: [],
+                meta: {},
+                props: {
+                    prev: prevs
+                },
+                position: 0,
+                headless: true
+            },
+            {
+                words: ['abuelo', 'la', 'abuela'],
+                types: ['SUBJ', 'ART', 'SUBJ'],
+                composed: true,
+                type: 'SUBJ',
+                children: [
+                    {position: 2, type: 'ADJ'}
+                ],
+                meta: {
+                    GENDER: 'ellos',
+                    PERSON: 'ellos'
+                },
+                props: {
+                    prev: prevs
+                },
+                position: 1,
+                headless: true,
+                genders: ['él', 'ella']
+            },
+            {
+                words: ['bueno'],
+                types: ['ADJ'],
+                composed: false,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                position: 2,
+                headless: false
+            }
+        ]
+        const langRef = require('../getter.js').getApp().database().ref('es');
+        const { handleType } = require('../handlers.js');
+        this.resultObjMain = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+        this.resultObjException = handleType(this.testObj[0], this.testObj, langRef, 'static', {});
+    })
+    
+    it('Should properly prepend following props.prev', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(thisResult.words[0]).to.equal('a el'); //HERE: this should be generalized
+    })
+    
+    it('Shoud be able to manage exceptions on props.prev', async () => {
+        const thisResult = await this.resultObjException;
+        expect(thisResult.words[0]).to.equal('mi mamá'); //HERE: this should be generalized
+        expect(thisResult.words[0]).not.to.equal('a el'); //HERE: this should be generalized
+    })
 
+    it('Should add connector if inexistent on composed SUBJ', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(thisResult.types).to.include('CON')
+    })
+
+    it('Should lead to the conjugation of ADJ children', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(this.testObj[1].meta.PERSON).to.equal(thisResult.meta.GENDER || thisResult.meta.PERSON)
+    })
 })
 
-//HERE: For now only SUBJ and VERB are important because ADJ and ADV have mostly no function and NOUN is basically the same as SUBJ
+describe('Test NOUN handlers', () => { 
+    before(() => {
+        this.testObj = [
+            {
+                words: ['casa'],
+                types: ['NOUN'],
+                composed: false,
+                type: 'NOUN',
+                children: [],
+                meta: {},
+                props: {
+                    prev: prevs
+                },
+                position: 0,
+                headless: true
+            },
+            {
+                words: ['bruja', 'el', 'ropero'],
+                types: ['NOUN', 'ART', 'NOUN'],
+                composed: true,
+                type: 'NOUN',
+                children: [
+                    {position: 2, type: 'ADJ'}
+                ],
+                meta: {
+                    GENDER: 'ellos',
+                    PERSON: 'ellos'
+                },
+                props: {
+                    prev: prevs
+                },
+                position: 1,
+                headless: true,
+                genders: ['ella', 'él']
+            },
+            {
+                words: ['hermoso'],
+                types: ['ADJ'],
+                composed: false,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                position: 2,
+                headless: false
+            }
+        ]
+        const langRef = require('../getter.js').getApp().database().ref('es');
+        const { handleType } = require('../handlers.js');
+        this.resultObjMain = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+        this.resultObjException = handleType(this.testObj[0], this.testObj, langRef, 'static', {});
+    })
+    
+    it('Should properly prepend following props.prev', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(thisResult.words[0]).to.equal('la'); //HERE: this should be generalized
+    })
+    
+    it('Shoud be able to manage exceptions on props.prev', async () => {
+        const thisResult = await this.resultObjException;
+        expect(thisResult.words[0]).to.equal('en casa'); //HERE: this should be generalized
+        expect(thisResult.words[0]).not.to.equal('la'); //HERE: this should be generalized
+    })
+
+    it('Should add connector if inexistent on composed NOUN', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(thisResult.types).to.include('CON')
+    })
+
+    it('Should lead to the conjugation of ADJ children', async () => {
+        const thisResult = await this.resultObjMain;
+        expect(this.testObj[1].meta.PERSON).to.equal(thisResult.meta.GENDER || thisResult.meta.PERSON)
+    })
+})
+
+describe('Test ADJ handlers', () => {
+    before(() => {
+        this.testObj = [
+            {
+                words: ['hermoso'],
+                types: ['ADJ'],
+                composed: false,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                position: 2,
+                headless: false
+            }
+        ]
+        const langRef = require('../getter.js').getApp().database().ref('es');
+        const { handleType } = require('../handlers.js');
+        this.resultObj = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+    })
+
+    it('Should add connector if inexistent on composed ADJ', async () => {
+        const thisResult = await this.resultObj;
+        expect(thisResult.types).to.include('CON')
+    })
+})
+
+describe('Test ADV handlers', () => {
+    before(() => {
+        this.testObj = [
+            {
+                words: ['rápido'],
+                types: ['ADV'],
+                composed: false,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                position: 2,
+                headless: false
+            }
+        ]
+        const langRef = require('../getter.js').getApp().database().ref('es');
+        const { handleType } = require('../handlers.js');
+        this.resultObj = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+    })
+
+    it('Should add connector if inexistent on composed ADV', async () => {
+        const thisResult = await this.resultObj;
+        expect(thisResult.types).to.include('CON')
+    })
+})

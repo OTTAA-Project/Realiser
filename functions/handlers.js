@@ -159,7 +159,7 @@ async function handleNOUN(obj, sentence, langRef, src){
                 ? obj.props.prev[obj.types[0]].EXCEPTION[obj.words[0]] || obj.props.prev[obj.types[0]].DEFAULT
                 : obj.props.prev[obj.types[0]].DEFAULT;
             const toPrependSplit = toPrepend.split(',')
-            for(let t=toPrependSplit.length-1; t<=0; t--){
+            for(let t=toPrependSplit.length-1; t>=0; t--){
                 const tp = toPrependSplit[t];
                 switch(tp){
                     case 'ART':
