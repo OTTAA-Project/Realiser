@@ -75,7 +75,7 @@ app.post('/parse', allowCors, (req, res) => {
     })
 })
 
-app.post('/dependate', allowCors, (req, res) => {
+app.post('/process', allowCors, (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
