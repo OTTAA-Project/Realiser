@@ -9,7 +9,7 @@
     "logs": "firebase functions:log",
     "test": "npm run unitest && npm run clientest",
     "unitest": "nyc --reporter=html --reporter=text mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js",
-    "clientest": "nyc mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/requests tests/requests.test.js"
+    "clientest": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/requests tests/requests.test.js"
   },
   "engines": {
     "node": "16"
