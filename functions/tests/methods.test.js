@@ -417,6 +417,87 @@ describe('Test VERB handlers', () => {
         expect(resultObj.meta.TIME).to.equal(testObj[2].meta.TIME)
     })
 
+    it('Should mix PERSON when more than one SUBJ children', async () => {
+        const testObj = [
+            {
+                words: ['yo'],
+                types: ['SUBJ'],
+                type: 'SUBJ',
+                position: 0,
+                children: [],
+                meta: {PERSON: 'yo'},
+                composed: false,
+                props: {}
+            },
+            {
+                words: ['él'],
+                types: ['SUBJ'],
+                type: 'SUBJ',
+                position: 0,
+                children: [],
+                meta: {PERSON: 'él'},
+                composed: false,
+                props: {}
+            },
+            {
+                words: ['hacer'],
+                types: ['VERB'],
+                type: 'VERB',
+                position: 2,
+                children: [
+                    {position: 0, type: 'SUBJ'},
+                    {position: 1, type: 'SUBJ'}
+                ],
+                meta: {},
+                composed: false,
+                props: {}
+            }
+        ]
+        const resultObj = await this.handleType(testObj[2], testObj, this.langRef, 'static', {})
+        expect(resultObj.meta.PERSON).to.equal('nosotros')
+    })
+
+    it('Should get TIME from closest when more than one ADV children', async () => {
+        const testObj = [
+            {
+                words: ['hoy'],
+                types: ['ADV'],
+                type: 'ADV',
+                position: 0,
+                children: [],
+                meta: {TIME: 'presente'},
+                composed: false,
+                props: {}
+            },
+            {
+                words: ['hacer'],
+                types: ['VERB'],
+                type: 'VERB',
+                position: 1,
+                children: [
+                    {position: 0, type: 'ADV'},
+                    {position: 3, type: 'ADV'}
+                ],
+                meta: {},
+                composed: false,
+                props: {}
+            },
+            {},
+            {
+                words: ['ayer'],
+                types: ['ADV'],
+                type: 'ADV',
+                position: 0,
+                children: [],
+                meta: {TIME: 'pasado'},
+                composed: false,
+                props: {}
+            }
+        ]
+        const resultObj = await this.handleType(testObj[1], testObj, this.langRef, 'static', {})
+        expect(resultObj.meta.TIME).to.equal(testObj[0].meta.TIME)
+    })
+
     it('Should handle forcing TIME and PERSON', async () => {
         const testObj = [
             {
@@ -434,6 +515,26 @@ describe('Test VERB handlers', () => {
         const resultObj = await this.handleType(testObj[0], testObj, this.langRef, 'static', forces)
         expect(resultObj.meta.PERSON).to.equal(forces.PERSON)
         expect(resultObj.meta.TIME).to.equal(forces.TIME)
+    })
+
+    it('Should join PREP with preceding VERB', async () => {
+        const testObj = [
+            {
+                words: ['ir', 'a', 'caminar'],
+                types: ['VERB', 'PREP', 'VERB'],
+                type: 'VERB',
+                position: 0,
+                children: [],
+                meta: {},
+                composed: false,
+                props: {}
+            }
+        ]
+        const forces = {PERSON: 'él', TIME: 'pasado'}
+        const resultObj = await this.handleType(testObj[0], testObj, this.langRef, 'static', forces)
+        expect(resultObj.words.length).to.equal(2)
+        expect(resultObj.words[0]).to.equal('fue a')
+        expect(resultObj.types).not.include('PREP')
     })
 })
 
@@ -591,20 +692,20 @@ describe('Test ADJ handlers', () => {
     before(() => {
         this.testObj = [
             {
-                words: ['hermoso'],
-                types: ['ADJ'],
-                composed: false,
+                words: ['hermoso', 'bueno'],
+                types: ['ADJ', 'ADJ'],
+                composed: true,
                 type: 'ADJ',
                 children: [],
                 meta: {},
                 props: {},
-                position: 2,
+                position: 0,
                 headless: false
             }
         ]
         const langRef = require('../getter.js').getApp().database().ref('es');
         const { handleType } = require('../handlers.js');
-        this.resultObj = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+        this.resultObj = handleType(this.testObj[0], this.testObj, langRef, 'static', {});
     })
 
     it('Should add connector if inexistent on composed ADJ', async () => {
@@ -617,20 +718,20 @@ describe('Test ADV handlers', () => {
     before(() => {
         this.testObj = [
             {
-                words: ['rápido'],
-                types: ['ADV'],
-                composed: false,
-                type: 'ADJ',
+                words: ['rápido', 'fuerte'],
+                types: ['ADV', 'ADV'],
+                composed: true,
+                type: 'ADV',
                 children: [],
                 meta: {},
                 props: {},
-                position: 2,
+                position: 0,
                 headless: false
             }
         ]
         const langRef = require('../getter.js').getApp().database().ref('es');
         const { handleType } = require('../handlers.js');
-        this.resultObj = handleType(this.testObj[1], this.testObj, langRef, 'static', {});
+        this.resultObj = handleType(this.testObj[0], this.testObj, langRef, 'static', {});
     })
 
     it('Should add connector if inexistent on composed ADV', async () => {
