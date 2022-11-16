@@ -1,5 +1,7 @@
 const admin = require('firebase-admin');
-const serviceAccount = require('./ottaaproject-flutter-firebase-adminsdk-z2x83-b744263584.json');
+const { readFileSync } = require('fs');
+
+const serviceAccount = JSON.parse(readFileSync(`${process.env.SERVICE_ACCOUNT}`, {encoding: 'utf-8'}))
 
 function getApp () {
     try{
@@ -7,7 +9,7 @@ function getApp () {
     } catch (e){
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://ottaaproject-realiser-lexicons.firebaseio.com/",
+            databaseURL: `${process.env.DATABASE_URL}`,
         }, 'realiser');
         return admin.app('realiser')
     }

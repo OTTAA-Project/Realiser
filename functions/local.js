@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const app = require('./routing.js');
 
 const PORT = 9090;
