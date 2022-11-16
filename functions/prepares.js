@@ -47,6 +47,7 @@ async function solveMISC(words, types, langRef){
     return [words, types];
 }
 
+/*
 async function splitART(obj, langRef){
     for(let i=0; i<obj.words.length; i++){
         const wordsSplit = obj.words[i].split(' ');
@@ -76,6 +77,7 @@ async function splitART(obj, langRef){
         }
     }
 }
+*/
 
 async function splitDefinitives(obj, langRef){
     for(let i=0; i<obj.words.length; i++){
