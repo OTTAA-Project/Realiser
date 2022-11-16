@@ -5,6 +5,7 @@
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
+    "build": "node local",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "test": "npm run unitest && npm run clientest",
@@ -16,6 +17,7 @@
   },
   "main": "index.js",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.18.0",
