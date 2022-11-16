@@ -4,7 +4,7 @@ const expect = require('chai').expect
 /////// MAIN METHODS ///////
 ////////////////////////////
 
-describe('Testing Prepare Sentence', () => {
+describe('Testing prepareSentence', () => {
     before(() => {
         this.prepareSentence = require('../methods.js').prepareSentence;
         
@@ -48,6 +48,231 @@ describe('Testing Prepare Sentence', () => {
     it('Should manage ADV metadata (TIME)', async () => {
         const thisResult = await this.resultObj;
         expect(thisResult[4].meta.TIME).to.equal('presente')
+    })
+})
+
+describe('Testing parseDependencies', () => {
+    before(() => {
+        this.parseDependencies = require('../methods.js').parseDependencies;
+        
+        const testObj = [
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 0,
+                type: 'SUBJ',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 1,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 2,
+                type: 'VERB',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 3,
+                type: 'ADV',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            }
+        ]
+
+        this.resultObj = this.parseDependencies(testObj, [], 'es')
+    })
+
+    it('headless should be false in elements that are children of others', async () => {
+        const thisResult = await this.resultObj;
+        const thisResultDependencies = thisResult[0]
+        const childrenList = thisResultDependencies.map(e => e.children.map(c => c.position)).flat()
+        for (elem of thisResultDependencies){
+            if (!elem.headless){
+                expect(childrenList).to.include(elem.position)
+            }
+        }
+    })
+
+    it('headless should be true in elements that are not children of others', async () => {
+        const thisResult = await this.resultObj;
+        const thisResultDependencies = thisResult[0]
+        const thisResultHeadless = thisResult[1]
+        const childrenList = thisResultDependencies.map(e => e.children.map(c => c.position)).flat()
+        for (elem of thisResultDependencies){
+            if (elem.headless){
+                expect(childrenList).not.to.include(elem.position)
+                expect(thisResultHeadless.map(c => c.position)).to.include(elem.position)
+            }
+        }
+    })
+})
+
+describe('Testing handleSentence', () => {
+    before(() => {
+        this.handleSentence = require('../methods.js').handleSentence;
+        
+        const testObj = [
+            {
+                words: ['mamá'],
+                types: ['SUBJ'],
+                composed: true,
+                position: 0,
+                type: 'SUBJ',
+                children: [
+                    {position: 1, type: 'ADJ'}
+                ],
+                meta: {PERSON: 'ella'},
+                props: {},
+                headless: true
+            },
+            {
+                words: ['preparado'],
+                types: ['ADJ'],
+                composed: true,
+                position: 1,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: ['comer'],
+                types: ['VERB'],
+                composed: true,
+                position: 2,
+                type: 'VERB',
+                children: [
+                    {position: 0, type: 'SUBJ'},
+                    {position: 3, type: 'ADV'}
+                ],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: ['mañana'],
+                types: ['ADV'],
+                composed: true,
+                position: 3,
+                type: 'ADV',
+                children: [],
+                meta: {TIME: 'futuro'},
+                props: {},
+                headless: true
+            }
+        ]
+
+        this.resultObj = this.handleSentence(testObj, 'es', {}, 'static')
+    })
+
+    it('VERB should get meta TIME from ADV', async () => {
+        const thisResult = await this.resultObj;
+        const verbIndex = thisResult.findIndex(e => e.type === 'VERB')
+        const advIndex = thisResult.findIndex(e => e.type === 'ADV')
+        expect(thisResult[verbIndex].meta.TIME).to.equal(thisResult[advIndex].meta.TIME)
+    })
+
+    it('VERB should get meta PERSON from SUBJ', async () => {
+        const thisResult = await this.resultObj;
+        const verbIndex = thisResult.findIndex(e => e.type === 'VERB')
+        const subjIndex = thisResult.findIndex(e => e.type === 'SUBJ')
+        expect(thisResult[verbIndex].meta.PERSON).to.equal(thisResult[subjIndex].meta.PERSON)
+    })
+
+    it('ADJ should inherit meta PERSON from SUBJ', async () => {
+        const thisResult = await this.resultObj;
+        const adjIndex = thisResult.findIndex(e => e.type === 'ADJ')
+        const subjIndex = thisResult.findIndex(e => e.type === 'SUBJ')
+        expect(thisResult[adjIndex].meta.TIME).to.equal(thisResult[subjIndex].meta.TIME)
+    })
+})
+
+describe('Testing realiseSentence', () => {
+    before(() => {
+        this.realiseSentence = require('../methods.js').realiseSentence;
+        
+        const testObj = [
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 0,
+                type: 'SUBJ',
+                children: [{position: 1, type: 'ADJ'}],
+                meta: {PERSON: 'test'},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 1,
+                type: 'ADJ',
+                children: [],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 2,
+                type: 'SUBJ',
+                children: [{position: 1, type: 'ADJ'}],
+                meta: {},
+                props: {},
+                headless: true
+            },
+            {
+                words: [],
+                types: [],
+                composed: true,
+                position: 3,
+                type: 'ADJ',
+                children: [],
+                meta: {TIME: 'test'},
+                props: {},
+                headless: true
+            }
+        ]
+
+        this.resultObj = this.realiseSentence(testObj, 'es')
+    })
+
+    it('Should generate a string', async () => {
+        const thisResult = await this.resultObj;
+        expect(typeof(thisResult)).to.equal('string')
+    })
+
+    it('Should add a connector between two equal similar heads', async () => {
+        const thisResult = await this.resultObj;
+        expect(thisResult).to.equal('y')
     })
 })
 
