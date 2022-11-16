@@ -7,7 +7,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "nyc --reporter=html --reporter=text mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js"
+    "test": "npm run unitest && npm run clientest",
+    "unitest": "nyc --reporter=html --reporter=text mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js",
+    "clientest": "nyc mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/requests tests/requests.test.js"
   },
   "engines": {
     "node": "16"
@@ -24,7 +26,8 @@
     "firebase-functions-test": "^0.2.0",
     "mocha": "^10.1.0",
     "mochawesome": "^7.1.3",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "supertest": "^6.3.1"
   },
   "private": true
 }
