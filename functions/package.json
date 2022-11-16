@@ -7,11 +7,7 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "npm run test-methods && npm run test-prepares && npm run test-dependencies",
-    "test-methods": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js",
-    "test-prepares": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/prepares tests/prepares.test.js",
-    "test-dependencies": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/dependencies tests/dependencies.test.js",
-    "test-handlers": "mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/handlers tests/handlers.test.js"
+    "test": "nyc --reporter=html --reporter=text mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js"
   },
   "engines": {
     "node": "16"
@@ -27,7 +23,8 @@
     "chai": "^4.3.7",
     "firebase-functions-test": "^0.2.0",
     "mocha": "^10.1.0",
-    "mochawesome": "^7.1.3"
+    "mochawesome": "^7.1.3",
+    "nyc": "^15.1.0"
   },
   "private": true
 }

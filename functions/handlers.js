@@ -45,14 +45,14 @@ async function handleType(obj, sentence, langRef, src, forces){
 }
 
 async function handleVERB(obj, sentence, langRef, src, forces){
-    //HERE: we are joining prepositions into the previous verb
+    //join prepositions with the previous verb
     let prepIndex = obj.types.findIndex(t => t === 'PREP')
     while (prepIndex >= 0) {
         obj.types.splice(prepIndex);
         obj.words.splice(prepIndex-1, 2, `${obj.words[prepIndex-1]} ${obj.words[prepIndex]}`)
         prepIndex = obj.types.findIndex(t => t === 'PREP')
     }
-    /////////////////////////////////////////////////////////
+
     const defaults = await dbGetter.getPersistent(langRef, 'DEFAULTS', {})
     
     const childrenSUBJ = obj.children.filter(c => c.type === 'SUBJ' || c.type === 'NOUN') //HERE: check if include NOUN here is ok
@@ -148,8 +148,7 @@ async function getVERBInfinitive(word, langRef){
         } else fullInf.push(w)
         i++;
     }
-    return fullInf.join(' ')
-    
+    return fullInf.join(' ') 
 }
 
 async function handleNOUN(obj, sentence, langRef, src){
