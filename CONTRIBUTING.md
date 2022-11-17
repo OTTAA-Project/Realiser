@@ -1,5 +1,3 @@
-# THIS IS STILL ON DEVELOPMENT SO YOU MIGHT FIND EMPTY SPACES AND/OR TEMPLATES
-
 # Contributing to the OTTAA Project
 
 We would love your help in the OTTAA Project. We have compiled this useful guide to all the ways you can collaborate. Reading it carefully before you start is important to maintain consistency in the project quality and ensure a respectful and positive environment in our community.
@@ -11,20 +9,25 @@ We would love your help in the OTTAA Project. We have compiled this useful guide
 <ol class="toc_list">
   <li><a href="#Ways-of-contributing">Ways of contributing</a>
   <li><a href="#As-a-developer">As a developer</a></li>
-  <ol>
-    <li><a href="#Setting-up-your-IDE">Setting up your IDE</a></li>
-    <li><a href="#setting-up-your-firebase-project">Setting up your Firebase Project</a></li>
-    <li><a href="#Reporting-an-issue">Reporting an issue</a></li>
-    <li><a href="#Submitting-a-pull-request">Submitting a pull request</a></li>
-    <li><a href="#Code-conventions">Code conventions</a></li>
-    <li><a href="#Analytics-implementation">Analytics implementation</a></li>
+    <ol>
+      <li><a href="#Setting-up-your-IDE">Setting up your IDE</a></li>
+      <li><a href="#setting-up-your-firebase-project">Setting up your Firebase Project</a></li>
+      <li><a href="#Reporting-an-issue">Reporting an issue</a></li>
+      <li><a href="#Submitting-a-pull-request">Submitting a pull request</a></li>
+      <li><a href="#Code-conventions">Code conventions</a></li>
+      <li><a href="#Analytics-implementation">Analytics implementation</a></li>
+    </ol>
+  </li>
+  <li><a href="#As-a-translator">As a Translator</a>
+    <ol>
+      <li><a href="#Lexicon_rules">Lexicon Rules</a></li>
+      <li><a href="#your_ideas">Your Ideas</a></li>
+    </ol>
+  </li>
+  <li><a href="#As-a-manual-tester">As a manual tester</a></li>
+  <li><a href="#As-an-automation-tester">As an automation tester</a></li>
+  <li><a href="#On-our-code-of-conduct">Code of conduct</a></li>
   </ol>
-</li>
-<li><a href="#As-a-translator">As a Translator</a></li>
-<li><a href="#As-a-manual-tester">As a manual tester</a></li>
-<li><a href="#As-an-automation-tester">As an automation tester</a></li>
-<li><a href="#On-our-code-of-conduct">Code of conduct</a></li>
-</ol>
 </div>
 
 ## Ways of contributing
@@ -124,171 +127,115 @@ Examples:
 |Fixes|	fix/*	|Always branch off HEAD of Working|
 |Hotfix|	hotfix/*	|Always branch off Stable
 
-
 ### Code conventions
 
-Consistent code writing, commenting and documenting style is key to collaboration. Make sure that you read the complete *Code conventions* section carefully and that your code complies with our guidelines. We are using [Effective Dart: Style](https://dart.dev/guides/language/effective-dart/style) as our main style guide for Dart. 
+Not defined yet.
 
-#### On commenting and documenting code
+## As a linguist/translator
 
-To get familiarized with the code, check the [API reference]()(add link to automatic doc when ready). We use [Dartdoc](https://pub.dev/packages/dartdoc) to build it and will ask you to use it as well when commenting your code. If you require assistance with Dartdoc please check [Using Dartdoc](#using-dartdoc) below.
+Realiser currently only supports Spanish, but we expect to include other languages too.
+As a linguist or translator you can contribute creating lexicons for new languages, improving the rules of already created lexicon or create new rules.
+In both cases, you should consider [following](#lexicon_directives) this directives:
 
-* Classes, variables, constants and relationship between classes should always be documented.
+### Lexicon directives
 
-* Your comments should be full English sentences.
-
-* Use [Dartdoc](https://pub.dev/packages/dartdoc) to generate automatic standardized documentation for your code. 
-
-* Use ```///``` to comment your code as it is the special syntax Dartdoc looks for when generating the documentation files.
-
-* Do **not** use /* block comments \*/ for documentation:
-
+- the main keys of the lexicon are the different language, that contain the rules for that language:
 ```
-[x]
-
-void greet(String name) {
-  /* Assume we have a valid name. */
-  print('Hi, $name!');
-}
-``` 
-* **Do** instead:
-
+lexicon
+|__es
+|  |__LEXICON_RULES_IN_SPANISH
+|__en
+|  |__LEXICON_RULES_IN_ENGLISH
+...
 ```
-[✓]
-
-void greet(String name) {
-  // Assume we have a valid name.
-  print('Hi, $name!');
-}
+- rules categories and wordtypes, that are general for every language and will be *hardcoded* on the app scripts, are capitalized, and rules specific for each language, toghether with the specific data are lowercased. For example, the **VERB** category is capitalized, but **times** and **persons** for each verb conjugation are lowercased because they can differ throughout each language (some languages have formal and informal SECOND PERSON, some have neutral aside from feminine and masculine THIRD PERSON):
 ```
-
-* You *can* use a block comment (/* ... \*/) to temporarily comment out a section of code, but all other comments should use ///.
-
-
-#### Using Dartdoc
-
-If this is your first time using it or you have any doubts about installation, execution, or formatting, please read our [Dartdoc API reference for Flutter](/dartdoc_automatic_documentation.md) to get started.
-
-
-#### On code duplication
-
-* Do not copy-paste source code. Reuse it in a  way that makes sense, rewriting the necessary parts.
-
-
-#### On importing libraries 
-
-* Sort by category.
-
-|Category|Description|
-|--------|-----------|
-| Google | Library related to google |
-| Android | Library related to android |
-|Firebase | Library related to firebase api|
-|Test |Library related to test app|
-| Library | Library related to different apps|
-
-* Sort by alphabetical order.
-
-* Use Grandle level app
-
-Example :
-
-```add code example here```
-
-
-#### On indentation
-
-
- Switch case
- 
-Example :
-
-```add code example here```
-
-
-If / else or else if
-
-Example :
-
-```add code example here```
-
-#### On classes
-
-* The attributes of the class must be protected or private.
-
-* The Method of the class can be public, private or protected.
-
-* Classes can be public or private.
-
-* Class names must be transparent and representative of its purpose.
-
-* Class names should be nouns in UpperCamelCase, with the first letter of every word capitalized.
-
-Example :
-
-```add code example here```
-
-#### On variables
-
-* Local variables, instance variables, and class variables should be written in lowerCamelCase: with the exception of the first world, the first letter of every word should be capitalized.
-
-Example :
-
-```add code example here```
-
-#### On constants
-
-* Constants should be written in UPPERCASE with words separated by underscores.
-
-Example:
-
-```add code example here```
-
-#### Firebase index:
-
-[FIREBASE TREE INDEX NEEDS UPDATING]
+lexicon
+|__es
+|  |__VERBS
+|  |  |__INFINITIVES
+|  |  |   ...
+|  |  |__CONJUGATIONS
+|  |  |   |__caminar
+|  |  |   |   |__presente
+|  |  |   |   |   |__yo: camino
+|  |  |   |   |   |__vos: caminás
+|  |  |   |   |   |__tú: caminas
+|  |  |   |   |   ...
+|  |  |   ...
+|  ...
+|__en
+|  |__VERBS
+|  |  |__INFINITIVES
+|  |  |   ...
+|  |  |__CONJUGATIONS
+|  |  |   |__walk
+|  |  |   |   |__present
+|  |  |   |   |   |__i: walk
+|  |  |   |   |   |__you: walk
+|  |  |   |   |   ...
+|  |  |   ...
+|  ...
+...
 ```
-#!code
-
-index
-├── Edad
-├── email
-├── Fotos
-|    ├── nombre_foto
-|    └── url_foto
-├── FotosUsuario
-├── Frases
-├── Grupos
-├── Juegos
-├── Pago
-├── Pictos
-├── PrimeraUltimaConexion
-└── Usuarios
+- exceptions can be added with a special **EXCEPTION** key:
+```
+VERBS
+|__SEQUENCES
+|   |__word
+|   |   |__DEFAULT: next-word
+|   |   |__EXCEPTION
+|   |   |   |__case1: next-word-case1
+|   |   |   |__case2: next-word-case2
+|   |   ...
+...
+```
+- clarifications can be added inside the data itself with a *:* separator:
+```
+HEADS
+|__head_wordtype
+|   |__child_wordtype: SING
+|   |__child_wordtype: MULT:LEFT
+|   |__child_wordtype: MULT:UNID
+|   ...
+...
+```
+- sequences inside the data are refered with a *,* separator or the array structure, depending on the case
+```
+language
+|__VERBS
+|   |__SEQUENCES
+|   |   |__word
+|   |   |   |__DEFAULT: next-word1,next-word2
+|   ...
+|__PERSONS
+|   |__GENDERS: [[masc_sing, masc_plural], [fem_sing, fem_plural]]
+|   ...
+...
 ```
 
-### Analytics implementation
+### Your ideas
 
-[Here](/analytics_implementation.md) is the list of events that should be tracked.
+But still remember this is a work in progress, so don't restrain to contribute only with data but bring your ideas for datastructures and algorithm logic on board too! Propose them on an issue or pull request.
 
-## As a translator
+### Lexicon Template
 
-We currently support Spanish, English, Portuguese and French, but we are open to adding new languages as users' needs arise. Everyone is welcome to contribute with suggestions, changes or error corrections via email at **support@ottaaproject.com**, use the subject "Contribution".
-
-Our focus right now is growing in Latin America, with this in mind we would love some help with **pictogram localization**, that is to say, to have pictograms translated **based on each country/region-specific culture and Spanish variety**. For example, we know that a car 🚗 is commonly *carro* in México but *auto* or *coche* in Argentina. 
-
-Chile, Argentina, Colombia, and the Caribbean are our current priorities, but of course we welcome help with any of our supported languages and regions.
-
+You can find a lexicon templates on (COMPLETE WHEN UPLOADED)
 
 ## As a manual tester
 
-We have test cases for manual testing [here](https://docs.google.com/document/d/1khElUEbtREVsTzwxKmLYfdDYJxCnz0zcNaIraRYaMGs/edit) and we mainly need help testing the overall functionality of the new Flutter version.
-
-Any bug or hotfix that results from manual testing should be reported via an [issue](https://github.com/OTTAA-Project/ottaa_project_flutter/issues) in our GitHub repository using the [template](https://github.com/OTTAA-Project/ottaa_project_flutter/issues/new?assignees=&labels=&template=bug_report.md&title=) for bug reporting.
-
+We are currently setting everything up for you to be able to test the Realiser API, for now you can do so by cloning our repo and deploying the app on your device locally using `npm run build`
 
 ## As an automation tester 
 
-We will be implementing a continuous integration workflow that will be running multiple automated testing. In the meantime, any experience with CI/CD and automated testing in Dart is very much welcome. Feel free to contact us at **support@ottaaproject.com**.
+According to common practices in API development, we implemented two types of tests:
+
+- Unit Testing: using [mocha](https://mochajs.org/), [chai](https://www.chaijs.com/) and [istambul](https://istanbul.js.org/) we've tested 80-90% of the app scripts. You can run them using `npm run unitest`. The rest results will be saved in *functions/tests/results/methods* and the test coverage at *functions/coverage*.
+- HTTP Testing: using [mocha](https://mochajs.org/), [chai](https://www.chaijs.com/) and [supertest](https://www.npmjs.com/package/supertest) we've tested all possible endpoints. You can run them using `npm run clientest`. The rest results will be saved in *functions/tests/results/requests*.
+
+You can run both test sequentially using `npm test` or `npm run test`.
+
+Keep in mind that some of the test still use lexicon data from Firebase, so if your Firebase Project and Database are not completely [setup](#setting-up-your-firebase-project), the tests might fail or you might get a different result.
 
 ## On our code of conduct
 
