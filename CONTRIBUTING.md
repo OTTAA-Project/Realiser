@@ -13,6 +13,7 @@ We would love your help in the OTTAA Project. We have compiled this useful guide
   <li><a href="#As-a-developer">As a developer</a></li>
   <ol>
     <li><a href="#Setting-up-your-IDE">Setting up your IDE</a></li>
+    <li><a href="#setting-up-your-firebase-project">Setting up your Firebase Project</a></li>
     <li><a href="#Reporting-an-issue">Reporting an issue</a></li>
     <li><a href="#Submitting-a-pull-request">Submitting a pull request</a></li>
     <li><a href="#Code-conventions">Code conventions</a></li>
@@ -37,22 +38,30 @@ You may contribute to OTTAA
 
 ## As a developer
 
-### Required knowledge (placeholder)
+### Required knowledge
 
 In order to contribute as a developer, you will need to have a basic understanding of Javascript and NodeJS. We also strongly recommend you be familiar with Firebase and/or other providers of infrastructure, platform and database as a service (IaaS, PaaS, DbaaS).
 
-#### Setting up your IDE
+### Setting up your app
 
 After you forked and/or cloned/downloaded the projects repository, follow this steps for basic configuration:
 - Download and install [npm](https://www.npmjs.com) for your Operating System (other NodeJS package manager might be functional too, still we recomend using npm)
 - Run `npm install` on the console inside the *functions* folder of the repository, to install all dependencies (that are already listed on the *package.json* file)
-- Run `flutter run` to run the project.
-- If you encounter any errors for model building, run `flutter packages pub run build_runner build --delete-conflicting-outputs`.
+- Since we use the services of Firebase, create and setup your own Firebase Project, create a Service Account and change the *.env* file with your data (be careful not to push any changes to the *.env* file), this is detailed on [Setting up your Firebase Project](#setting-up-your-firebase-project).
+- Run `npm run build` to deploy the app on a local server.
+
+### Setting up your Firebase Project
+
+To be able to use your own version of our app, you need your own Firebase Project:
+- You will need a Firebase Account. Since Firebase is associated with Google Cloud, having a Google account will work on Firebase.
+- Enter [Firebase](https://firebase.google.com/) and go to the console.
+- Create a new project (or select an existing one), [here](https://docs.kii.com/en/samples/push-notifications/push-notifications-android-fcm/create-project/) you have a more detailed guide on it.
+- Once your project is setup, activate the *Realtime Database* functionality inside *Build*, create a database and load your own version of the lexicon (you can use the provided template). Copy the URL of the lexicon database and paste it in the *.env* file, under the **DATABASE_URL** variable.
+- Finally, setup a Service Account, inside Project Setup, this will allow you to use [**firebase-admin**](https://firebase.google.com/docs/admin/setup) functionalities. Save the JSON file inside the functions folder and add the path to the *.env* file, under the **SERVICE_ACCOUNT** variable. There's no need to copy the code snippet provided on the Service Account creation, since it's already added and uses the data on the *.env* file.
 
 ### Reporting an issue
 
 Any bug or hotfix that results from manual testing should be reported via an [issue](https://github.com/OTTAA-Project/ottaa_project_flutter/issues) in our GitHub repository using the **[template](https://github.com/OTTAA-Project/ottaa_project_flutter/issues/new?assignees=&labels=&template=bug_report.md&title=)** for bug reporting and **providing as much information as possible** about the bug, including: used **version of OTTAA** and/or **version of web navigator** and clear instructions on how to **reproduce** the bug.
-
 
 ### Submitting a pull request
 
@@ -61,8 +70,8 @@ Please bear the following in mind when creating a PR:
 * Avoid file conflicts with the source code.
 * Make a detailed description about the features it applies to.
 * Make the PR in the corresponding branch.
-* Avoid your PR containing unrelated commits, keep it focused on its scope. 
-
+* Avoid your PR containing unrelated commits, keep it focused on its scope.
+* Avoid pushing any changes on the *.env* file, if you have already done so, revert it to the ones in the master brunch.
 
 #### Commits
 
@@ -92,7 +101,6 @@ Commit message with description and BREAKING CHANGE footer:
 *feat: allow provided config object to extend other configs*
 *BREAKING CHANGE: `extends` key in config file is now used for extending other config files*
 
-
 Commit message with scope and ! to draw attention to breaking change
 
 *feat(api)!: send an email to the customer when a product is shipped
@@ -101,7 +109,6 @@ Commit message with both ! and BREAKING CHANGE footer
 
 *chore!: drop support for Node 6
 *BREAKING CHANGE: use JavaScript features not available in Node 6.
-
 
 #### Branch naming 
 
