@@ -1,10 +1,6 @@
-const functions = require('firebase-functions');
+require('dotenv').config()
 
 const app = require('./routing.js');
-
-/////////////////
-///// LOCAL /////
-/////////////////
 
 const PORT = 9090;
 app.listen(PORT, () => console.log(`Realiser up locally on http://localhost:${PORT}`))

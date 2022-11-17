@@ -138,7 +138,7 @@
         }
       }
     },
-    "/dependate": {
+    "/process": {
       "post": {
         "description": "Post the sentence object and get an array of the structure with dependencies traced and most processing of words already applied.",
         "parameters": [
