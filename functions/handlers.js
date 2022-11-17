@@ -1,5 +1,7 @@
 const { dbGetter } = require("./getter.js");
 
+
+/*
 async function findART(obj, langRef){
     const addART = []
     let i = 0, j = 0;
@@ -16,6 +18,7 @@ async function findART(obj, langRef){
         obj.types.splice(v[0] + i, 0, 'ART')
     })
 }
+*/
 
 async function handleType(obj, sentence, langRef, src, forces){
     if(obj.position > 0){
@@ -47,7 +50,7 @@ async function handleType(obj, sentence, langRef, src, forces){
 async function handleVERB(obj, sentence, langRef, src, forces){
     //join prepositions with the previous verb
     let prepIndex = obj.types.findIndex(t => t === 'PREP')
-    while (prepIndex >= 0) {
+    while (prepIndex > 0) {
         obj.types.splice(prepIndex);
         obj.words.splice(prepIndex-1, 2, `${obj.words[prepIndex-1]} ${obj.words[prepIndex]}`)
         prepIndex = obj.types.findIndex(t => t === 'PREP')
@@ -121,8 +124,10 @@ async function getVERBConjugations(infinitive, src, langRef, time, person){
         case 'static':
             conj = await dbGetter.getOnce(langRef, `VERBS/CONJUGATIONS/${infinitive}/${time + (person ? '/' + person : '')}`)
             break;
+        /*
         case 'wordreference':
             break;
+        */
     }
     return conj || infinitive;
 }
@@ -159,7 +164,7 @@ async function handleNOUN(obj, sentence, langRef, src){
                 ? obj.props.prev[obj.types[0]].EXCEPTION[obj.words[0]] || obj.props.prev[obj.types[0]].DEFAULT
                 : obj.props.prev[obj.types[0]].DEFAULT;
             const toPrependSplit = toPrepend.split(',')
-            for(let t=toPrependSplit.length-1; t<=0; t--){
+            for(let t=toPrependSplit.length-1; t>=0; t--){
                 const tp = toPrependSplit[t];
                 switch(tp){
                     case 'ART':

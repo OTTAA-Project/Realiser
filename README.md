@@ -62,28 +62,3 @@ We use [Swagger](https://swagger.io/) to create the [API reference](https://us-c
 ## Contributing
 
 Contributors help the OTTAA Project grow. If you would like to become a contributor, please read [Contribute](CONTRIBUTING.md).
-
-## Acknowledgements
-
-
-## Sponsors
-
-Thank you to our current sponsors!
-
-<p float="left">
-    <a href="https://www.unicef.org/"><img src="/public/images/sponsors/UNICEF_logo_2016.png" width="200"></a>
-    <a href="https://startupchile.org/en/"><img src="/public/images/sponsors/startup_chile.jpg" width="200"></a>
-    <a href="https://www.expo2020dubai.com/en"><img src="/public/images/sponsors/EXPO_2020_Dubai_logo.png" width="200" width="200"></a>
-    <a href="https://katapult.vc/startups/accelerators/"><img src="/public/images/sponsors/katapult_accelerator.png" width="200"></a>
-</p>
-
-Support this project by [becoming a sponsor](https://www.ottaaproject.com/support-ottaa-project.php).
-
-## :memo: Legal & Licenses
-
-* Code - GPLv3
-* ARASAAC Symbols - CC BY-NC-SA 4.0
-* Global Symbols CIC - CC BY-NC-SA 4.0
-* OTTAA Project™ 2016 - 2022
-
-OTTAA's brand assets, texts, logos, icons, designs, names of other OTTAA software, and any other brand features and elements, whether registered or unregistered (“Brand Assets”)—are proprietary assets owned exclusively by OTTAA and its group of companies.

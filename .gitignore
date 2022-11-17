@@ -1,3 +1,7 @@
+# Firebase
+.firebaserc
+firebase.json
+
 # NPM
 **/package-lock.json
 
