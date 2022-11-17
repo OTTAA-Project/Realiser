@@ -1,5 +1,6 @@
 const { dbGetter } = require("./getter.js");
 
+
 /*
 async function findART(obj, langRef){
     const addART = []

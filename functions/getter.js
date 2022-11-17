@@ -9,6 +9,7 @@ function getApp () {
     } catch (e){
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://ottaaproject-realiser-lexicons.firebaseio.com/",
             databaseURL: `${process.env.DATABASE_URL}`,
         }, 'realiser');
         return admin.app('realiser')
