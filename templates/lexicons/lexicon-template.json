@@ -1,0 +1,467 @@
+{
+  "es": {
+    "ADJECTIVES": {
+      "GENDERS": {
+        "lindo": {
+          "él": "lindo",
+          "ella": "linda",
+          "ellos": "lindos",
+          "ellas": "lindas"
+        },
+        "feliz": {
+          "él": "feliz",
+          "ella": "feliz",
+          "ellos": "felices",
+          "ellas": "felices"
+        }
+      }
+    },
+    "ADVERBS": {
+      "TIMES": {
+        "futuro": [
+          "mañana"
+        ],
+        "pasado": [
+          "antes",
+          "ayer"
+        ],
+        "presente": [
+          "hoy"
+        ]
+      }
+    },
+    "DEFINITIVES": {
+      "MISC": {
+        "antes": "ADV",
+        "ayer": "ADV",
+        "con": "PREP",
+        "de": "PREP",
+        "hoy": "ADV",
+        "mañana": "ADV"
+        },
+      "GENDER": {
+        "mamá": "ella",
+        "papá": "él"
+      }
+    },
+    "DEFAULTS": {
+      "CON": "y",
+      "GENDER": "él",
+      "PERSON": [
+        "él",
+        "ellos"
+      ],
+      "PREP": "con",
+      "TIME": "presente"
+    },
+    "HEADS": {
+      "NOUN": {
+        "ADJ": "MULT:LEFT",
+        "PRON": "MULT:RIGHT"
+      },
+      "SUBJ": {
+        "ADJ": "MULT:LEFT",
+        "PRON": "MULT:RIGHT"
+      },
+      "VERB": {
+        "ADV": "MULT:",
+        "NOUN": "MULT:UNID",
+        "SUBJ": "MULT:UNID"
+      }
+    },
+    "PASTERS": {
+      "ADJ": {
+        "ADJ": "JOIN",
+        "CON": "MIGHT"
+      },
+      "ADV": {
+        "ADV": "JOIN"
+      },
+      "ART": {
+        "NOUN": "MORPH:NOUN"
+      },
+      "MOD": {
+        "MOD": "JOIN"
+      },
+      "NOUN": {
+        "NOUN": "JOIN",
+        "PRON": "MIGHT"
+      },
+      "PREP": {
+        "NOUN": "MORPH:OBJ",
+        "SUBJ": "MORPH:OBJ"
+      },
+      "SUBJ": {
+        "SUBJ": "JOIN",
+        "PRON": "MIGHT"
+      },
+      "VERB": {
+        "VERB": "JOIN"
+      }
+    },
+    "PERSONS": {
+      "GENDERS": [
+        [
+          "él",
+          "ellos"
+        ],
+        [
+          "ella",
+          "ellas"
+        ]
+      ],
+      "PLURALS": [
+        [
+          "yo",
+          "nosotros"
+        ],
+        [
+          "vos",
+          "ustedes"
+        ],
+        [
+          "tú",
+          "ustedes"
+        ],
+        [
+          "usted",
+          "ustedes"
+        ],
+        [
+          "él",
+          "ellos"
+        ],
+        [
+          "ella",
+          "ellas"
+        ]
+      ]
+    },
+    "VERBS": {
+      "CONJUGATIONS": {
+        "caminar": {
+          "condicional": {
+            "ella": "caminaría",
+            "ellos": "caminarían",
+            "nosotros": "caminaríamos",
+            "tú": "caminarías",
+            "ustedes": "caminarían",
+            "vos": "caminarías",
+            "vosotros": "caminaríais",
+            "yo": "caminaría",
+            "él": "caminaría"
+          },
+          "futuro": {
+            "ella": "caminará",
+            "ellos": "caminarán",
+            "nosotros": "caminaremos",
+            "tú": "caminarás",
+            "ustedes": "caminarán",
+            "vos": "caminarás",
+            "vosotros": "caminaréis",
+            "yo": "caminaré",
+            "él": "caminará"
+          },
+          "gerundio": "caminando",
+          "imperfecto": {
+            "ella": "caminaba",
+            "ellos": "caminaban",
+            "nosotros": "caminábamos",
+            "tú": "caminabas",
+            "ustedes": "caminaban",
+            "vos": "caminabas",
+            "vosotros": "caminabais",
+            "yo": "caminaba",
+            "él": "caminaba"
+          },
+          "participio": "caminado",
+          "pasado": {
+            "ella": "caminó",
+            "ellos": "caminaron",
+            "nosotros": "caminamos",
+            "tú": "caminaste",
+            "ustedes": "caminaron",
+            "vos": "caminaste",
+            "vosotros": "caminasteis",
+            "yo": "caminé",
+            "él": "caminó"
+          },
+          "presente": {
+            "ella": "camina",
+            "ellos": "caminan",
+            "nosotros": "caminamos",
+            "tú": "caminas",
+            "ustedes": "caminan",
+            "vos": "caminas",
+            "vosotros": "camináis",
+            "yo": "camino",
+            "él": "camina"
+          }
+        },
+        "ir": {
+          "condicional": {
+            "ella": "iría",
+            "ellos": "irían",
+            "nosotros": "iríamos",
+            "tú": "irías",
+            "ustedes": "irían",
+            "vos": "irías",
+            "vosotros": "iríais",
+            "yo": "iría",
+            "él": "iría"
+          },
+          "futuro": {
+            "ella": "irá",
+            "ellos": "irán",
+            "nosotros": "iremos",
+            "tú": "irás",
+            "ustedes": "irán",
+            "vos": "irás",
+            "vosotros": "iréis",
+            "yo": "iré",
+            "él": "irá"
+          },
+          "gerundio": "yendo",
+          "imperfecto": {
+            "ella": "iba",
+            "ellos": "iban",
+            "nosotros": "íbamos",
+            "tú": "ibas",
+            "ustedes": "iban",
+            "vos": "ibas",
+            "vosotros": "ibais",
+            "yo": "iba",
+            "él": "iba"
+          },
+          "participio": "ido",
+          "pasado": {
+            "ella": "fue",
+            "ellos": "fueron",
+            "nosotros": "fuimos",
+            "tú": "fuiste",
+            "ustedes": "fueron",
+            "vos": "fuiste",
+            "vosotros": "fuisteis",
+            "yo": "fui",
+            "él": "fue"
+          },
+          "presente": {
+            "ella": "va",
+            "ellos": "van",
+            "nosotros": "vamos",
+            "tú": "vas",
+            "ustedes": "van",
+            "vos": "vas",
+            "vosotros": "vais",
+            "yo": "voy",
+            "él": "va"
+          }
+        }
+      },
+      "INFINITIVES": {
+        "camina": "caminar",
+        "caminaba": "caminar",
+        "caminabais": "caminar",
+        "caminaban": "caminar",
+        "caminabas": "caminar",
+        "caminad": "caminar",
+        "caminado": "caminar",
+        "caminamos": "caminar",
+        "caminan": "caminar",
+        "caminando": "caminar",
+        "caminar": "caminar",
+        "caminara": "caminar",
+        "caminarais": "caminar",
+        "caminaran": "caminar",
+        "caminaras": "caminar",
+        "caminaremos": "caminar",
+        "caminaron": "caminar",
+        "caminará": "caminar",
+        "caminarán": "caminar",
+        "caminarás": "caminar",
+        "caminaré": "caminar",
+        "caminaréis": "caminar",
+        "caminaría": "caminar",
+        "caminaríais": "caminar",
+        "caminaríamos": "caminar",
+        "caminarían": "caminar",
+        "caminarías": "caminar",
+        "caminas": "caminar",
+        "caminaste": "caminar",
+        "caminasteis": "caminar",
+        "camine": "caminar",
+        "caminemos": "caminar",
+        "caminen": "caminar",
+        "camines": "caminar",
+        "camino": "caminar",
+        "caminábamos": "caminar",
+        "camináis": "caminar",
+        "camináramos": "caminar",
+        "caminé": "caminar",
+        "caminéis": "caminar",
+        "caminó": "caminar"
+      },
+      "SEQUENCES": {
+        "ir": "gerundio",
+        "ir a": "INF"
+      }
+    }
+  },
+  "en": {
+    "ADVERBS": {
+      "TIMES": {
+        "future": [
+          "tomorrow"
+        ],
+        "past": [
+          "before",
+          "yesterday"
+        ],
+        "present": [
+          "today"
+        ]
+      }
+    },
+    "DEFINITIVES": {
+      "MISC": {
+        "before": "ADV",
+        "yesterday": "ADV",
+        "with": "PREP",
+        "of": "PREP",
+        "today": "ADV",
+        "tomorrow": "ADV"
+        },
+      "GENDER": {
+        "mom": "she",
+        "dad": "he"
+      }
+    },
+    "DEFAULTS": {
+      "CON": "and",
+      "GENDER": "he",
+      "PERSON": [
+        "he",
+        "them"
+      ],
+      "PREP": "with",
+      "TIME": "present"
+    },
+    "HEADS": {
+      "NOUN": {
+        "ADJ": "MULT:LEFT",
+        "PRON": "MULT:RIGHT"
+      },
+      "SUBJ": {
+        "ADJ": "MULT:LEFT",
+        "PRON": "MULT:RIGHT"
+      },
+      "VERB": {
+        "ADV": "MULT:",
+        "NOUN": "MULT:UNID",
+        "SUBJ": "MULT:UNID"
+      }
+    },
+    "PASTERS": {
+      "ADJ": {
+        "ADJ": "JOIN",
+        "CON": "MIGHT"
+      },
+      "ADV": {
+        "ADV": "JOIN"
+      },
+      "ART": {
+        "NOUN": "MORPH:NOUN"
+      },
+      "MOD": {
+        "MOD": "JOIN"
+      },
+      "NOUN": {
+        "NOUN": "JOIN",
+        "PRON": "MIGHT"
+      },
+      "PREP": {
+        "NOUN": "MORPH:OBJ",
+        "SUBJ": "MORPH:OBJ"
+      },
+      "SUBJ": {
+        "SUBJ": "JOIN",
+        "PRON": "MIGHT"
+      },
+      "VERB": {
+        "VERB": "JOIN"
+      }
+    },
+    "PERSONS": {
+      "GENDERS": [
+        [
+          "he",
+          "they"
+        ],
+        [
+          "she",
+          "they"
+        ]
+      ],
+      "PLURALS": [
+        [
+          "i",
+          "we"
+        ],
+        [
+          "you",
+          "you(p)"
+        ],
+        [
+          "he",
+          "they"
+        ],
+        [
+          "she",
+          "they"
+        ]
+      ]
+    },
+    "VERBS": {
+      "CONJUGATIONS": {
+        "walk": {
+          "future": "will walk",
+          "participle": "walking",
+          "past-participle": "walked",
+          "past": "walked",
+          "present": {
+            "i": "walk",
+            "we": "walk",
+            "you": "walk",
+            "he": "walks",
+            "she": "walks",
+            "they": "walk"
+          }
+        },
+        "go": {
+          "future": "will go",
+          "participle": "going",
+          "past-participle": "gone",
+          "past": "went",
+          "present": {
+            "i": "go",
+            "we": "go",
+            "you": "go",
+            "he": "goes",
+            "she": "goes",
+            "they": "go"
+          }
+        }
+      },
+      "INFINITIVES": {
+        "will walk": "walk",
+        "walking": "walk",
+        "walked": "walk",
+        "walk": "walk",
+        "walks": "walk"
+      },
+      "SEQUENCES": {
+        "go to": "INF"
+      }
+    }
+  }
+}

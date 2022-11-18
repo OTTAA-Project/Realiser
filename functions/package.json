@@ -6,7 +6,7 @@
     "shell": "firebase functions:shell",
     "start": "npm run shell",
     "build": "node local",
-    "deploy": "firebase deploy --only functions",
+    "deploy": "firebase deploy --only functions:realiser",
     "logs": "firebase functions:log",
     "test": "npm run unitest && npm run clientest",
     "unitest": "nyc --reporter=html --reporter=text mocha --exit --timeout 5000 --reporter mochawesome --reporter-options reportDir=tests/results/methods tests/methods.test.js",
