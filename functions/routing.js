@@ -1,6 +1,7 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDoc = require('./docs/swagger.config.json')
+const swaggerDoc = require('./swagger/swagger.config.json');
+const cors = require('cors')
 const { log, error } = require("firebase-functions/lib/logger");
 
 const { 
@@ -10,42 +11,26 @@ const {
     realiseSentence 
 } = require('./methods.js');
 
-function allowCors(req, res, next){
-    res.set('Access-Control-Allow-Origin', '*'); //this should be configured for only the apps we want to be able to access the API
-
-    if (req.method === 'OPTIONS') {
-        res.set('Access-Control-Allow-Methods', 'POST');
-        res.set('Access-Control-Allow-Methods', 'GET');
-        res.set('Access-Control-Allow-Headers', 'Content-Type');
-        res.set('Access-Control-Max-Age', '3600');
-        res.status(204).send('');
-    } else {
-        next();
-    }
-}
-
 const app = express()
 
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname)); //swagger customCssUrl requires defining an static path on functions (root)
-app.use(
-    '/docs',
-    allowCors,
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerDoc, {
-        customCssUrl: '/assets/swagger.css',
-        customSiteTitle: 'OTTAA Realiser Docs',
-        customfavIcon: '/assets/logo.ico',
-        swaggerOptions: {
-            supportedSubmitMethods: [] //to disable the "Try it out" button
-        }
-    })
-)
+app.use('/docs', swaggerUi.serve)
+app.get('/docs', swaggerUi.setup(swaggerDoc, {
+    customCssUrl: '../assets/swagger.css',
+    customSiteTitle: 'OTTAA Realiser Docs',
+    customfavIcon: '../assets/logo.ico',
+    swaggerOptions: {
+        supportedSubmitMethods: [] //to disable the "Try it out" button
+    }
+}))
+
 
 app.get('/', (req, res) => res.send('Welcome to the coolest Realiser!'))
 
-app.post('/prepare', allowCors, (req, res) => {
+app.post('/prepare', (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
@@ -59,7 +44,7 @@ app.post('/prepare', allowCors, (req, res) => {
     })
 })
 
-app.post('/parse', allowCors, (req, res) => {
+app.post('/parse', (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
@@ -75,7 +60,7 @@ app.post('/parse', allowCors, (req, res) => {
     })
 })
 
-app.post('/process', allowCors, (req, res) => {
+app.post('/process', (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
@@ -92,7 +77,7 @@ app.post('/process', allowCors, (req, res) => {
     })
 })
 
-app.post('/realise', allowCors, (req, res) => {
+app.post('/realise', (req, res) => {
     const body = req.body;
     if (!body.words || !body.types) {
         res.status(400).send({err: 'Wrong request body, missing properties words and/or types'})
@@ -110,7 +95,7 @@ app.post('/realise', allowCors, (req, res) => {
     })
 })
 
-app.post('/replicate', allowCors, (req, res) => {
+app.post('/replicate', (req, res) => {
     res.status(200).json(req.body)
 })
 

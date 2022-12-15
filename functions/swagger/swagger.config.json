@@ -9,6 +9,10 @@
     {
       "url": "https://us-central1-ottaaproject-flutter.cloudfunctions.net/realiser",
       "description": "deploy"
+    },
+    {
+      "url": "http://localhost:9090",
+      "description": "local"
     }
   ],
   "paths": {
